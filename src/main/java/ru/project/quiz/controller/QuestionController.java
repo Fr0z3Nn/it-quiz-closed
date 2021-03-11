@@ -14,7 +14,6 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/question")
 @AllArgsConstructor
-
 @Tag(name = "Контроллер вопросов")
 public class QuestionController {
     private final QuestionService questionService;
@@ -30,6 +29,7 @@ public class QuestionController {
     @PostMapping("/add")
     public ResponseEntity<String> addQuestion(@Valid @RequestBody QuestionDTO questionDTO) {
         questionService.saveQuestion(questionDTO);
-        return new ResponseEntity<>("Товар добавлен", HttpStatus.OK);
+        return new ResponseEntity<>("Вопрос добавлен", HttpStatus.OK);
     }
+
 }

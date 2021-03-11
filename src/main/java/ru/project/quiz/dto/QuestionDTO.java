@@ -1,5 +1,6 @@
 package ru.project.quiz.dto;
 
+import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
@@ -12,11 +13,8 @@ import ru.project.quiz.enums.Difficulty;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Schema(description = "Сущность вопроса")
-@EqualsAndHashCode
 public class QuestionDTO {
-    @EqualsAndHashCode.Exclude
     @Schema(description = "ID", accessMode = Schema.AccessMode.READ_ONLY)
     long id;
 
@@ -24,10 +22,8 @@ public class QuestionDTO {
     @Schema(description = "Название")
     String name;
 
-
     @Schema(description = "Описание")
     String description;
-
 
     @Schema(description = "URL картинки")
     String imageUrl;

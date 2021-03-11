@@ -1,9 +1,6 @@
 package ru.project.quiz.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import ru.project.quiz.enums.Category;
 import ru.project.quiz.enums.Difficulty;
 
@@ -17,9 +14,10 @@ import javax.persistence.*;
 @Table(name = "question")
 public class Question {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     long id;
     String name;
+    String description;
     String imageUrl;
     Difficulty difficulty;
     Category category;
