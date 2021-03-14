@@ -25,8 +25,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     public QuestionDTO getRandomQuestion() {
-        Question question = questionRepository.getRandomQuestion().orElseThrow(
-                () -> new QuestionNotFoundException("Список вопросов пуст"));
+        Question question = questionRepository.getRandomQuestion()
+                .orElseThrow(() -> new QuestionNotFoundException("Question list is empty"));
         return questionMapper.questionDTOFromQuestion(question);
     }
 
@@ -34,7 +34,7 @@ public class QuestionServiceImpl implements QuestionService {
     public void saveQuestion(QuestionDTO questionDTO) {
         Question question = questionMapper.questionFromQuestionDTO(questionDTO);
         if (isExistQuestion(question)) {
-            throw new QuestionIsExistException("Данный вопрос уже существует");
+            throw new QuestionIsExistException("Question is exist");
         }
         questionRepository.save(question);
     }
