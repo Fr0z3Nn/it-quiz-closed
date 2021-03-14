@@ -39,6 +39,15 @@ public class QuestionServiceImpl implements QuestionService {
         questionRepository.save(question);
     }
 
+    @Override
+    public void deleteQuestion(long id) {
+        if (!questionRepository.findById(id).isPresent()) {
+            throw new QuestionNotFoundException("Question not found with id: " + id);
+        } else {
+            questionRepository.deleteById(id);
+        }
+    }
+
     private boolean isExistQuestion(Question question) {
         Example<Question> example = Example.of(question, modelToCheckExistQuestion());
         return questionRepository.exists(example);

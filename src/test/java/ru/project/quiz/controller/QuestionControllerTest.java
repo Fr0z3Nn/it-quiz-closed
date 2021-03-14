@@ -1,12 +1,8 @@
 package ru.project.quiz.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import javafx.beans.binding.When;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +12,9 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.event.annotation.BeforeTestClass;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.web.util.NestedServletException;
 import ru.project.quiz.dto.QuestionDTO;
 import ru.project.quiz.entity.Question;
 import ru.project.quiz.enums.Category;
@@ -28,7 +22,6 @@ import ru.project.quiz.enums.Difficulty;
 import ru.project.quiz.handler.exception.QuestionNotFoundException;
 import ru.project.quiz.handler.response.Response;
 import ru.project.quiz.repository.QuestionRepository;
-import ru.project.quiz.service.QuestionService;
 
 import java.util.Optional;
 
@@ -52,7 +45,7 @@ class QuestionControllerTest {
     private Question question;
 
     @BeforeEach
-    public void setUp(){
+    public void setUp() {
         question = Question.builder()
                 .id(1)
                 .category(Category.CORE)
@@ -109,7 +102,7 @@ class QuestionControllerTest {
                 .andReturn();
         String resultContent = result.getResponse().getContentAsString();
         Response response = om.readValue(resultContent, Response.class);
-        assertEquals("Question is added",response.getMessage());
+        assertEquals("Question is added", response.getMessage());
     }
 
     @Test
@@ -128,7 +121,7 @@ class QuestionControllerTest {
                 .andReturn();
         String resultContent = result.getResponse().getContentAsString();
         Response response = om.readValue(resultContent, Response.class);
-        assertEquals("Question is exist",response.getMessage());
+        assertEquals("Question is exist", response.getMessage());
     }
 
     @Test
@@ -142,5 +135,35 @@ class QuestionControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())
                 .andReturn();
+    }
+
+    @Test
+    void deleteQuestion() throws Exception {
+        long id = question.getId();
+        Mockito.doReturn(Optional.of(question)).when(questionRepository).findById(id);
+        Mockito.doNothing().when(questionRepository).deleteById(id);
+        MvcResult result = mockMvc
+                .perform(
+                        post("/api/question/delete/{id}", id))
+                .andExpect(status().isOk())
+                .andReturn();
+        String resultContent = result.getResponse().getContentAsString();
+        Response response = om.readValue(resultContent, Response.class);
+        assertEquals("Question has been deleted", response.getMessage());
+    }
+
+    @Test
+    void deleteQuestionNotFound() throws Exception {
+        long id = question.getId();
+        Mockito.doReturn(Optional.empty()).when(questionRepository).findById(id);
+        Mockito.doNothing().when(questionRepository).deleteById(id);
+        MvcResult result = mockMvc
+                .perform(
+                        post("/api/question/delete/{id}", id))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        String resultContent = result.getResponse().getContentAsString();
+        Response response = om.readValue(resultContent, Response.class);
+        assertEquals("Question not found with id: " + id, response.getMessage());
     }
 }

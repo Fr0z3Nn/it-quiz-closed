@@ -33,4 +33,10 @@ public class QuestionController {
         return new ResponseEntity<>(new Response("Question is added"), HttpStatus.OK);
     }
 
+    @Operation(summary = "Удаление вопроса")
+    @PostMapping("/delete/{id}")
+    public ResponseEntity<Response> deleteQuestion(@PathVariable long id) {
+        questionService.deleteQuestion(id);
+        return new ResponseEntity<>(new Response("Question has been deleted"), HttpStatus.OK);
+    }
 }
