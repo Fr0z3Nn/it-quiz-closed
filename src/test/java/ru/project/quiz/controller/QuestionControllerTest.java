@@ -178,7 +178,7 @@ class QuestionControllerTest {
         String jsonItem = om.writeValueAsString(editedQuestion);
         MvcResult result = mockMvc
                 .perform(
-                        post("/api/question/edit", id)
+                        post("/api/question/edit/{id}", id)
                                 .content(jsonItem)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
@@ -198,7 +198,7 @@ class QuestionControllerTest {
         String jsonItem = om.writeValueAsString(editedQuestion);
         MvcResult result = mockMvc
                 .perform(
-                        post("/api/question/edit", id)
+                        post("/api/question/edit/{id}", id)
                                 .content(jsonItem)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest())

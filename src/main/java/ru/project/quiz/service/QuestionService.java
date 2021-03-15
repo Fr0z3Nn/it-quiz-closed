@@ -9,5 +9,5 @@ public interface QuestionService {
 
     void deleteQuestion(long id);
 
-    void editQuestion(QuestionDTO questionDTO);
+    void editQuestion(QuestionDTO questionDTO, long id);
 }

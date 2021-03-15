@@ -49,8 +49,8 @@ public class QuestionServiceImpl implements QuestionService {
     }
 
     @Override
-    public void editQuestion(QuestionDTO questionDTO) {
-        questionRepository.findById(questionDTO.getId())
+    public void editQuestion(QuestionDTO questionDTO, long id) {
+        questionRepository.findById(id)
                 .map(questionRepository::save)
                 .orElseThrow(() -> new QuestionNotFoundException("Question not found"));
     }
