@@ -48,6 +48,13 @@ public class QuestionServiceImpl implements QuestionService {
         }
     }
 
+    @Override
+    public void editQuestion(QuestionDTO questionDTO) {
+        questionRepository.findById(questionDTO.getId())
+                .map(questionRepository::save)
+                .orElseThrow(() -> new QuestionNotFoundException("Question not found"));
+    }
+
     private boolean isExistQuestion(Question question) {
         Example<Question> example = Example.of(question, modelToCheckExistQuestion());
         return questionRepository.exists(example);

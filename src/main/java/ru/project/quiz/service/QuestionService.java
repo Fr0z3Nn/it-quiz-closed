@@ -8,4 +8,6 @@ public interface QuestionService {
     void saveQuestion(QuestionDTO questionDTO);
 
     void deleteQuestion(long id);
+
+    void editQuestion(QuestionDTO questionDTO);
 }

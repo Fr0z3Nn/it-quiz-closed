@@ -1,7 +1,8 @@
 package ru.project.quiz.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,13 +20,13 @@ import ru.project.quiz.dto.QuestionDTO;
 import ru.project.quiz.entity.Question;
 import ru.project.quiz.enums.Category;
 import ru.project.quiz.enums.Difficulty;
-import ru.project.quiz.handler.exception.QuestionNotFoundException;
 import ru.project.quiz.handler.response.Response;
 import ru.project.quiz.repository.QuestionRepository;
 
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -165,5 +166,45 @@ class QuestionControllerTest {
         String resultContent = result.getResponse().getContentAsString();
         Response response = om.readValue(resultContent, Response.class);
         assertEquals("Question not found with id: " + id, response.getMessage());
+    }
+
+    @Test
+    void editQuestion() throws Exception {
+        long id = question.getId();
+        Question editedQuestion = question;
+        editedQuestion.setName("someName");
+        Mockito.doReturn(Optional.of(question)).when(questionRepository).findById(id);
+        Mockito.when(questionRepository.save(editedQuestion)).thenReturn(editedQuestion);
+        String jsonItem = om.writeValueAsString(editedQuestion);
+        MvcResult result = mockMvc
+                .perform(
+                        post("/api/question/edit", id)
+                                .content(jsonItem)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andReturn();
+        String resultContent = result.getResponse().getContentAsString();
+        Response response = om.readValue(resultContent, Response.class);
+        assertEquals("Question has been edited", response.getMessage());
+    }
+
+    @Test
+    void editQuestionNotFound() throws Exception {
+        long id = question.getId();
+        Question editedQuestion = question;
+        editedQuestion.setName("someName");
+        Mockito.doReturn(Optional.empty()).when(questionRepository).findById(id);
+        Mockito.when(questionRepository.save(editedQuestion)).thenReturn(null);
+        String jsonItem = om.writeValueAsString(editedQuestion);
+        MvcResult result = mockMvc
+                .perform(
+                        post("/api/question/edit", id)
+                                .content(jsonItem)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andReturn();
+        String resultContent = result.getResponse().getContentAsString();
+        Response response = om.readValue(resultContent, Response.class);
+        assertEquals("Question not found", response.getMessage());
     }
 }

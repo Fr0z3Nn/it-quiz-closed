@@ -39,4 +39,11 @@ public class QuestionController {
         questionService.deleteQuestion(id);
         return new ResponseEntity<>(new Response("Question has been deleted"), HttpStatus.OK);
     }
+
+    @Operation(summary = "Редактирование вопроса")
+    @PostMapping("/edit")
+    public ResponseEntity<Response> editQuestion(@Valid @RequestBody QuestionDTO questionDTO) {
+        questionService.editQuestion(questionDTO);
+        return new ResponseEntity<>(new Response("Question has been edited"), HttpStatus.OK);
+    }
 }
