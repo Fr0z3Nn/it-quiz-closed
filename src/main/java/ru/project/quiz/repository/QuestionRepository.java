@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface QuestionRepository extends JpaRepository<Question,Long> {
     @Override
     Optional<Question> findById(Long id);
-    @Query(value = "SELECT * FROM Question ORDER BY RAND() LIMIT 1", nativeQuery = true)
+    @Query(value = "SELECT * FROM Questions ORDER BY RAND() LIMIT 1", nativeQuery = true)
     Optional<Question> getRandomQuestion();
 
 }

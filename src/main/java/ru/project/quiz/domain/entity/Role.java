@@ -1,8 +1,6 @@
 package ru.project.quiz.domain.entity;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import ru.project.quiz.domain.enums.RoleType;
 
@@ -14,8 +12,10 @@ import java.util.Set;
 @Data
 @Builder
 @EqualsAndHashCode
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "roles")
-public class Role implements GrantedAuthority {
+public class Role {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,11 +25,6 @@ public class Role implements GrantedAuthority {
     @Enumerated(EnumType.STRING)
     @Column(name = "name")
     private RoleType role;
-
-    @Override
-    public String getAuthority() {
-        return role.name();
-    }
 
     @ManyToMany(mappedBy = "roles")
     private Collection<User> users;

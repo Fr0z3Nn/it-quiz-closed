@@ -8,8 +8,4 @@ import ru.project.quiz.domain.entity.User;
 @Service
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
-    User findByUsername(String email);
-    User findByName(String name);
-    User findByGoogleUsername(String googleUsername);
-    User findByGoogleName(String googleName);
 }

@@ -14,7 +14,7 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode
 @Table(name = "users")
-public class User implements UserDetails {
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -29,15 +29,6 @@ public class User implements UserDetails {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "active")
-    private boolean active;
-
-    @Column(name = "google_name")
-    private String googleName;
-
-    @Column(name = "google_username")
-    private String googleUsername;
-
 
     @ManyToMany
     @JoinColumns({
@@ -47,38 +38,5 @@ public class User implements UserDetails {
     })
     @Enumerated(EnumType.STRING)
     private Set<Role> roles;
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return isActive();
-    }
-
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
 
 }
