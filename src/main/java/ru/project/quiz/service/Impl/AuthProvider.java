@@ -1,7 +1,6 @@
 package ru.project.quiz.service.Impl;
 
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -10,7 +9,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
-import ru.project.quiz.entity.User;
+import ru.project.quiz.domain.entity.User;
 import ru.project.quiz.service.UserService;
 
 import java.util.Collection;

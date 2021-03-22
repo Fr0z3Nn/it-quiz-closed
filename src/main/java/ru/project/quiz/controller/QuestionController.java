@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import ru.project.quiz.dto.QuestionDTO;
+import ru.project.quiz.domain.dto.QuestionDTO;
 import ru.project.quiz.handler.response.Response;
 import ru.project.quiz.service.QuestionService;
 

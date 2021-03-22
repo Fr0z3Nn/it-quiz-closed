@@ -20,8 +20,9 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.util.Assert;
-import ru.project.quiz.entity.User;
-import ru.project.quiz.enums.Role;
+import ru.project.quiz.domain.entity.Role;
+import ru.project.quiz.domain.entity.User;
+import ru.project.quiz.domain.enums.RoleType;
 import ru.project.quiz.repository.UserRepository;
 
 
@@ -97,7 +98,9 @@ public class CustomUserInfoTokenServices implements ResourceServerTokenServices 
             if (user == null) {
                 user = new User();
                 user.setActive(true);
-                user.setRoles(Collections.singleton(Role.USER));
+                user.setRoles(Collections.singleton(Role.builder()
+                        .role(RoleType.USER)
+                        .build()));
             }
 
             user.setName(googleName);

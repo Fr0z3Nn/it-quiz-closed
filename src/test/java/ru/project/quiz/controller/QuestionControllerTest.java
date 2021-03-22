@@ -16,10 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import ru.project.quiz.dto.QuestionDTO;
-import ru.project.quiz.entity.Question;
-import ru.project.quiz.enums.Category;
-import ru.project.quiz.enums.Difficulty;
+import ru.project.quiz.domain.dto.QuestionDTO;
+import ru.project.quiz.domain.entity.Question;
+import ru.project.quiz.domain.enums.CategoryType;
+import ru.project.quiz.domain.enums.DifficultyType;
 import ru.project.quiz.handler.response.Response;
 import ru.project.quiz.repository.QuestionRepository;
 
@@ -49,8 +49,8 @@ class QuestionControllerTest {
     public void setUp() {
         question = Question.builder()
                 .id(1)
-                .category(Category.CORE)
-                .difficulty(Difficulty.EASY)
+                .categoryType(CategoryType.CORE)
+                .difficultyType(DifficultyType.EASY)
                 .description("description")
                 .imageUrl("http://site.com")
                 .name("First Question")
@@ -68,10 +68,10 @@ class QuestionControllerTest {
         String result = request.getResponse().getContentAsString();
         QuestionDTO questionResponse = om.readValue(result, QuestionDTO.class);
         assertAll(
-                () -> assertEquals(questionResponse.getCategory(), question.getCategory()),
+                () -> assertEquals(questionResponse.getCategoryType(), question.getCategoryType()),
                 () -> assertEquals(questionResponse.getName(), question.getName()),
                 () -> assertEquals(questionResponse.getImageUrl(), question.getImageUrl()),
-                () -> assertEquals(questionResponse.getDifficulty(), question.getDifficulty()),
+                () -> assertEquals(questionResponse.getDifficultyType(), question.getDifficultyType()),
                 () -> assertEquals(questionResponse.getId(), question.getId()),
                 () -> assertEquals(questionResponse.getDescription(), question.getDescription())
         );

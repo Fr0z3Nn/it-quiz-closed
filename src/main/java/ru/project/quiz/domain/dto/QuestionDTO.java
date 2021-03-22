@@ -1,13 +1,12 @@
-package ru.project.quiz.dto;
+package ru.project.quiz.domain.dto;
 
-import javax.persistence.Column;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import ru.project.quiz.enums.Category;
-import ru.project.quiz.enums.Difficulty;
+import ru.project.quiz.domain.enums.CategoryType;
+import ru.project.quiz.domain.enums.DifficultyType;
 
 @Data
 @Builder
@@ -30,10 +29,10 @@ public class QuestionDTO {
 
     @NotNull(message = "Сложность вопроса должна присутствовать")
     @Schema(description = "Сложность")
-    Difficulty difficulty;
+    DifficultyType difficultyType;
 
     @NotNull(message = "Категория вопроса должна присутствовать")
     @Schema(description = "Категория")
-    Category category;
+    CategoryType categoryType;
 
 }
