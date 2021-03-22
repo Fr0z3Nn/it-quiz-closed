@@ -1,5 +1,6 @@
 package ru.project.quiz.config;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -87,15 +88,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception
     {
-        http
-                .csrf().disable()
+        http.authorizeRequests()
+                .antMatchers("/**").permitAll()
+                .anyRequest().permitAll()
+                .and()
+                .cors().disable()
+                .csrf().disable();
+                /*.csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/resources/**", "/", "/login**", "/registration").permitAll()
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login")
                 .defaultSuccessUrl("/notes").failureUrl("/login?error").permitAll()
                 .and().logout().logoutSuccessUrl("/").permitAll();
-
+*/
         http
                 .addFilterBefore(ssoFilter(), UsernamePasswordAuthenticationFilter.class);
     }
