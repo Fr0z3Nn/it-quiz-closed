@@ -26,10 +26,6 @@ public class User{
     @Column(name = "password")
     private String password;
 
-    @Column(name = "name")
-    private String name;
-
-
     @ManyToMany
     @JoinColumns({
             @JoinColumn(name = "role_id", referencedColumnName = "id"),
