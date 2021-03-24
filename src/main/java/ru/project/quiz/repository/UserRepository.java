@@ -5,7 +5,8 @@ import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 import ru.project.quiz.domain.entity.User;
 
-@Service
-@Repository
+import java.util.Optional;
+
 public interface UserRepository extends JpaRepository<User, Long> {
+    Optional<User> findUserByUsername (String username);
 }
