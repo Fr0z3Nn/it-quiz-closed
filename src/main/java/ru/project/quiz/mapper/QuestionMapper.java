@@ -6,6 +6,7 @@ import ru.project.quiz.domain.entity.Question;
 
 @Mapper(componentModel = "spring")
 public interface QuestionMapper {
-    Question questionFromQuestionDTO (QuestionDTO questionDTO);
-    QuestionDTO questionDTOFromQuestion (Question question);
+    Question questionFromQuestionDTO(QuestionDTO questionDTO);
+
+    QuestionDTO questionDTOFromQuestion(Question question);
 }

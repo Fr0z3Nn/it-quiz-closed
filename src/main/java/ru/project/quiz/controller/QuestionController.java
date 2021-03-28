@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import ru.project.quiz.domain.dto.QuestionDTO;
 import ru.project.quiz.handler.response.Response;
@@ -19,9 +20,9 @@ import javax.validation.Valid;
 public class QuestionController {
 
     private static final String RANDOM_QUESTION = "/random";
-    private static final String ADD_QUESTION = "/add";
-    private static final String DELETE_QUESTION = "/delete/{id}";
-    private static final String EDIT_QUESTION = "/edit/{id}";
+    private static final String ADD_QUESTION = "/admin/add";
+    private static final String DELETE_QUESTION = "/admin/delete/{id}";
+    private static final String EDIT_QUESTION = "/admin/edit/{id}";
 
     private final QuestionService questionService;
 

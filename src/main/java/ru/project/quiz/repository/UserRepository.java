@@ -6,5 +6,5 @@ import ru.project.quiz.domain.entity.ITUser;
 import java.util.Optional;
 
 public interface UserRepository extends JpaRepository<ITUser, Long> {
-    Optional<ITUser> findUserByUsername (String username);
+    Optional<ITUser> findUserByUsername(String username);
 }
