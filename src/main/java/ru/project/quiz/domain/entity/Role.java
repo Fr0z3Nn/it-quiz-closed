@@ -1,12 +1,10 @@
 package ru.project.quiz.domain.entity;
 
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
 import ru.project.quiz.domain.enums.RoleType;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.Set;
 
 @Entity
 @Data
@@ -27,5 +25,5 @@ public class Role {
     private RoleType role;
 
     @ManyToMany(mappedBy = "roles")
-    private Collection<User> users;
+    private Collection<ITUser> ITUsers;
 }

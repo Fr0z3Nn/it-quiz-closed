@@ -1,7 +1,6 @@
 package ru.project.quiz.domain.entity;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.project.quiz.domain.enums.RoleType;
@@ -12,9 +11,12 @@ import java.util.Set;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @EqualsAndHashCode
 @Table(name = "users")
-public class User{
+public class ITUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -25,10 +27,6 @@ public class User{
 
     @Column(name = "password")
     private String password;
-
-    @Column(name = "name")
-    private String name;
-
 
     @ManyToMany
     @JoinColumns({
