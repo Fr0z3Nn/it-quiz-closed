@@ -18,6 +18,7 @@ import ru.project.quiz.repository.UserRepository;
 import ru.project.quiz.service.ITUserService;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -42,33 +43,25 @@ public class ITUserServiceImpl implements UserDetailsService, ITUserService {
         throw new UsernameNotFoundException("User not found, sorry");
     }
 
-    public boolean saveUser(ITUser user) {
-        Optional<ITUser> optionalUser = userRepository.findUserByUsername(user.getUsername());
-        if (!optionalUser.isPresent()) return false;
-        Role role = new Role();
-        role.setRole(RoleType.USER);
-        role.setId(user.getId());
-        Set<Role> set = new HashSet<>();
-        set.add(role);
-        user.setRoles(set);
-        user.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-        return true;
-    }
-
     @Override
-    public void doRegister(ITUserDTO ITUserDTO) {
-        if(ITUserDTO == null){
-            throw new IncorrectInputUserException("Неккоретный ввод пользователя");
+    public void saveUser(ITUserDTO itUserDTO) {
+        Optional<ITUser> optionalUser = userRepository.findUserByUsername(itUserDTO.getUsername());
+        if (optionalUser.isPresent()) {
+            //TODO сделать обработку данной ошибки
+            throw new IncorrectInputUserException("Данный пользователь существует");
         } else {
-            ITUser user = userMapper.userFromUserDTO(ITUserDTO);
-            Role role = new Role();
-            role.setRole(RoleType.USER);
-            role.setId(user.getId());
-            Set<Role> set = new HashSet<>();
-            set.add(role);
-            user.setRoles(set);
+            ITUser user = ITUser.builder()
+                    .username(itUserDTO.getUsername())
+                    .password(bCryptPasswordEncoder.encode(itUserDTO.getPassword()))
+                    .roles(
+                            rolesToSet(Role.builder().role(RoleType.USER).build())
+                    )
+                    .build();
             userRepository.save(user);
         }
+    }
+
+    private Set<Role> rolesToSet(Role... roles) {
+        return Arrays.stream(roles).collect(Collectors.toSet());
     }
 }

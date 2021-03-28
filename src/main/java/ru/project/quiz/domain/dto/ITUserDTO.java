@@ -22,5 +22,6 @@ public class ITUserDTO {
     String username;
 
     @Schema(description = "Пароль")
+    @NotBlank(message = "Пароль не должен быть пустым")
     String password;
 }
