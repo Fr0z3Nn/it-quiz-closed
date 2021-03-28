@@ -1,22 +1,16 @@
 package ru.project.quiz.domain.entity;
 
-import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
-import ru.project.quiz.domain.enums.RoleType;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
-import java.util.Collection;
 import java.util.Set;
 
 @Entity
 @Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode
 @Table(name = "users")
-public class ITUser {
+public class ITUser{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
@@ -28,7 +22,7 @@ public class ITUser {
     @Column(name = "password")
     private String password;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinColumns({
             @JoinColumn(name = "role_id", referencedColumnName = "id"),
             @JoinColumn(name = "user_id", referencedColumnName = "id")
