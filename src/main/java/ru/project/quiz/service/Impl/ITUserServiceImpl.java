@@ -27,7 +27,6 @@ import java.util.Set;
 public class ITUserServiceImpl implements UserDetailsService, ITUserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final UserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -59,5 +58,10 @@ public class ITUserServiceImpl implements UserDetailsService, ITUserService {
                     .build();
             userRepository.save(user);
         }
+    }
+
+    @Override
+    public List<ITUser> allUsers() {
+        return userRepository.findAll();
     }
 }

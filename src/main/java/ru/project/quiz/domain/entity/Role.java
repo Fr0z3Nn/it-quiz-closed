@@ -1,6 +1,7 @@
 package ru.project.quiz.domain.entity;
 
 import lombok.*;
+import org.springframework.security.core.GrantedAuthority;
 import ru.project.quiz.domain.enums.RoleType;
 
 import javax.persistence.*;
@@ -13,7 +14,7 @@ import java.util.Collection;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "roles")
-public class Role {
+public class Role implements GrantedAuthority {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,4 +27,9 @@ public class Role {
 
     @ManyToMany(mappedBy = "roles")
     private Collection<ITUser> ITUsers;
+
+    @Override
+    public String getAuthority() {
+        return role.name();
+    }
 }
