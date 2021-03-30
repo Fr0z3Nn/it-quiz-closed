@@ -40,6 +40,7 @@ public class ITUserDTO implements UserDetails {
        return this.getRoles().stream()
                 .map(roleDTO -> new SimpleGrantedAuthority(roleDTO.getRole().name()))
                 .collect(Collectors.toList());
+       //test
     }
 
     @Override
