@@ -21,9 +21,10 @@ import javax.validation.Valid;
 @AllArgsConstructor
 public class RegistrationController {
     public final ITUserService userService;
+    public final String REGISTER = "/register";
 
     @Operation(summary = "Регистрация")
-    @PostMapping("/register")
+    @PostMapping(REGISTER)
     public ResponseEntity<Response> registration(@Valid @RequestBody ITUserDTO ITUserDTO) {
         userService.saveUser(ITUserDTO);
         return new ResponseEntity<>(new Response("Register success"), HttpStatus.OK);

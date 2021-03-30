@@ -15,7 +15,6 @@ import ru.project.quiz.mapper.UserMapper;
 import ru.project.quiz.repository.UserRepository;
 import ru.project.quiz.service.ITUserService;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -48,6 +47,21 @@ public class ITUserServiceImpl implements UserDetailsService, ITUserService {
                             Set.of(Role.builder().role(RoleType.USER).build())
                     )
                     .build();
+            userRepository.save(user);
+        }
+    }
+
+
+    @Override
+    public void setUserToAdmin(long id) {
+        Optional<ITUser> optionalITUser = userRepository.findById(id);
+        if (optionalITUser.isEmpty()) {
+            throw new IncorrectInputUserException("Данный пользователь не существует");
+        } else {
+            ITUser user = optionalITUser.get();
+            Set<Role> set = user.getRoles();
+            set.add(Role.builder().role(RoleType.ADMIN).build());
+            user.setRoles(set);
             userRepository.save(user);
         }
     }
