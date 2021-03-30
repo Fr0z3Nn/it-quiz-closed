@@ -7,5 +7,4 @@ import java.util.List;
 
 public interface ITUserService {
     void saveUser(ITUserDTO ITUserDTO);
-    List<ITUser> allUsers();
 }

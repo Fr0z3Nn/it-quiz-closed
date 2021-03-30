@@ -11,6 +11,7 @@ import ru.project.quiz.domain.entity.ITUser;
 import ru.project.quiz.domain.entity.Role;
 import ru.project.quiz.domain.enums.RoleType;
 import ru.project.quiz.handler.exception.IncorrectInputUserException;
+import ru.project.quiz.mapper.UserMapper;
 import ru.project.quiz.repository.UserRepository;
 import ru.project.quiz.service.ITUserService;
 
@@ -23,12 +24,13 @@ import java.util.Set;
 public class ITUserServiceImpl implements UserDetailsService, ITUserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         Optional<ITUser> optionalUser = userRepository.findUserByUsername(username);
         if (optionalUser.isPresent()) {
-            return optionalUser.get();
+            return userMapper.userDTOFromUser(optionalUser.get());
         }
         throw new UsernameNotFoundException("User not found, sorry");
     }
@@ -48,10 +50,5 @@ public class ITUserServiceImpl implements UserDetailsService, ITUserService {
                     .build();
             userRepository.save(user);
         }
-    }
-
-    @Override
-    public List<ITUser> allUsers() {
-        return userRepository.findAll();
     }
 }

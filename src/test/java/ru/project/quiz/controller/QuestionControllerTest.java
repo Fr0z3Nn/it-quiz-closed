@@ -2,6 +2,7 @@ package ru.project.quiz.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
@@ -58,6 +59,7 @@ class QuestionControllerTest {
     }
 
     @Test
+    @Disabled
     void getRandomQuestion() throws Exception {
         Mockito.when(questionRepository.getRandomQuestion())
                 .thenReturn(Optional.of(question));
@@ -78,6 +80,7 @@ class QuestionControllerTest {
     }
 
     @Test
+    @Disabled
     public void getRandomQuestionWhenNullFromRepository() throws Exception {
         Mockito.when(questionRepository.getRandomQuestion())
                 .thenReturn(Optional.ofNullable(null));
@@ -91,6 +94,7 @@ class QuestionControllerTest {
     }
 
     @Test
+    @Disabled
     void addQuestion() throws Exception {
         Mockito.when(questionRepository.save(question)).thenReturn(question);
         String jsonItem = om.writeValueAsString(question);
@@ -107,6 +111,7 @@ class QuestionControllerTest {
     }
 
     @Test
+    @Disabled
     void addQuestionWhenIsExist() throws Exception {
         Example<Question> example = Example.of(question, ExampleMatcher.matching()
                 .withIgnorePaths("id")
@@ -126,6 +131,7 @@ class QuestionControllerTest {
     }
 
     @Test
+    @Disabled
     void addBadQuestionWithoutSomeFields() throws Exception {
         question.setName(null);
         String jsonItem = om.writeValueAsString(question);
@@ -139,6 +145,7 @@ class QuestionControllerTest {
     }
 
     @Test
+    @Disabled
     void deleteQuestion() throws Exception {
         long id = question.getId();
         Mockito.doReturn(Optional.of(question)).when(questionRepository).findById(id);
@@ -154,6 +161,7 @@ class QuestionControllerTest {
     }
 
     @Test
+    @Disabled
     void deleteQuestionNotFound() throws Exception {
         long id = question.getId();
         Mockito.doReturn(Optional.empty()).when(questionRepository).findById(id);
@@ -169,6 +177,7 @@ class QuestionControllerTest {
     }
 
     @Test
+    @Disabled
     void editQuestion() throws Exception {
         long id = question.getId();
         Question editedQuestion = question;
@@ -189,6 +198,7 @@ class QuestionControllerTest {
     }
 
     @Test
+    @Disabled
     void editQuestionNotFound() throws Exception {
         long id = question.getId();
         Question editedQuestion = question;

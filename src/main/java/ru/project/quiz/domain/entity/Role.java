@@ -28,8 +28,6 @@ public class Role {
     private RoleType role;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER,mappedBy = "roles")
-    @EqualsAndHashCode.Exclude
-    @ToString.Exclude
     private Set<ITUser> ITUsers;
 
 }
