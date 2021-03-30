@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 @Builder
@@ -36,14 +37,9 @@ public class ITUserDTO implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        System.out.println(roles);
-        Set<RoleDTO> roles = this.getRoles();
-        System.out.println(roles);
-        List<SimpleGrantedAuthority> authorities = new ArrayList<>();
-        for (RoleDTO role : roles) {
-            authorities.add(new SimpleGrantedAuthority(role.getRole().name()));
-        }
-        return authorities;
+       return this.getRoles().stream()
+                .map(roleDTO -> new SimpleGrantedAuthority(roleDTO.getRole().name()))
+                .collect(Collectors.toList());
     }
 
     @Override

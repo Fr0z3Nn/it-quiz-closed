@@ -1,0 +1,12 @@
+spring:
+  jpa:
+    database: postgresql
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/quiz
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
