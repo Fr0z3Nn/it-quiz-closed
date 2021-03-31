@@ -1,12 +1,16 @@
 package ru.project.quiz.domain.dto.quiz;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.project.quiz.domain.enums.question.CategoryType;
 import ru.project.quiz.domain.enums.question.DifficultyType;
+
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Data
 @Builder
@@ -34,5 +38,8 @@ public class QuestionDTO {
     @NotNull(message = "Категория вопроса должна присутствовать")
     @Schema(description = "Категория")
     CategoryType categoryType;
+
+    @NotNull
+    List<AnswerDTO> answers;
 
 }

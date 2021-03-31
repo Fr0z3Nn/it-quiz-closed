@@ -12,8 +12,10 @@ import ru.project.quiz.domain.entity.ituser.ITUser;
 import ru.project.quiz.domain.entity.quiz.Question;
 import ru.project.quiz.domain.entity.quiz.QuestionQuiz;
 import ru.project.quiz.domain.entity.quiz.Quiz;
+import ru.project.quiz.domain.enums.question.QuizStatus;
 import ru.project.quiz.handler.exception.IncorrectInputUserException;
 import ru.project.quiz.handler.exception.QuestionNotFoundException;
+import ru.project.quiz.handler.exception.QuizNotFoundException;
 import ru.project.quiz.mapper.quiz.QuizMapper;
 import ru.project.quiz.repository.itquiz.UserRepository;
 import ru.project.quiz.repository.quiz.QuestionQuizRepository;
@@ -53,7 +55,7 @@ public class QuizServiceImpl implements QuizService {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ITUserDTO requestUser = (ITUserDTO) authentication.getPrincipal();
         Optional<ITUser> user = userRepository.findUserByUsername(requestUser.getUsername());
-        if (!user.isPresent()) {
+        if (user.isEmpty()) {
             log.error(userWhoTriedCreateQuestionIsNotExist);
             throw new IncorrectInputUserException(userWhoTriedCreateQuestionIsNotExist);
         }
@@ -61,6 +63,7 @@ public class QuizServiceImpl implements QuizService {
         log.info("Попытка начать генерацию теста от {} успешна", userUsername);
         Quiz quiz = Quiz.builder()
                 .name("ИМЯ ТЕСТА ПОКА ПОСТОЯННОЕ")
+                .quizStatus(QuizStatus.CREATED)
                 .itUser(user.get())
                 .build();
 
@@ -92,5 +95,13 @@ public class QuizServiceImpl implements QuizService {
         quizDTO.setDescription(description);
         log.info("{} успешно сгенрировал тест c id : {}", userUsername, quizDTO.getId());
         return quizDTO;
+    }
+
+    @Override
+    public void finishQuiz(Long id) {
+        Quiz quiz = quizRepository.findById(id).orElseThrow(() -> new QuizNotFoundException("Данного теста не существует"));
+        if (quiz.getQuizStatus() == QuizStatus.FINISHED) throw new QuestionNotFoundException("Данный вопрос уже завершен");
+        quiz.setQuizStatus(QuizStatus.FINISHED);
+        quizRepository.save(quiz);
     }
 }

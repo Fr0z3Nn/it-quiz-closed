@@ -5,6 +5,7 @@ import ru.project.quiz.domain.enums.question.CategoryType;
 import ru.project.quiz.domain.enums.question.DifficultyType;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Data
 @Entity
@@ -28,11 +29,14 @@ public class Question {
     @Column(name = "image_url")
     String imageUrl;
 
-    @Column(name = "difficultyType")
+    @Column(name = "difficulty_type")
     @Enumerated(EnumType.STRING)
     DifficultyType difficultyType;
 
-    @Column(name = "categoryType")
+    @Column(name = "category_type")
     CategoryType categoryType;
+
+    @OneToMany(mappedBy = "question")
+    private List<Answer> answers;
 
 }

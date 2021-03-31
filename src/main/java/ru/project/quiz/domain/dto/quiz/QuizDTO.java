@@ -9,6 +9,8 @@ import ru.project.quiz.domain.entity.ituser.ITUser;
 import ru.project.quiz.domain.entity.quiz.Question;
 import ru.project.quiz.domain.entity.quiz.QuestionQuiz;
 import ru.project.quiz.domain.entity.quiz.Quiz;
+import ru.project.quiz.domain.enums.question.DifficultyType;
+import ru.project.quiz.domain.enums.question.QuizStatus;
 
 import javax.persistence.*;
 import java.util.List;
@@ -27,4 +29,5 @@ public class QuizDTO {
 
    private List<QuestionQuizDTO> questions;
 
+   private QuizStatus quizStatus;
 }

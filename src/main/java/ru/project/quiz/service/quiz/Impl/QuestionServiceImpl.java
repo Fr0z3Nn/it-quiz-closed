@@ -1,24 +1,40 @@
 package ru.project.quiz.service.quiz.Impl;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
+import ru.project.quiz.domain.dto.quiz.AnswerDTO;
 import ru.project.quiz.domain.dto.quiz.QuestionDTO;
+import ru.project.quiz.domain.entity.quiz.Answer;
 import ru.project.quiz.domain.entity.quiz.Question;
+import ru.project.quiz.handler.exception.QuestionCreationException;
 import ru.project.quiz.handler.exception.QuestionIsExistException;
 import ru.project.quiz.handler.exception.QuestionNotFoundException;
+import ru.project.quiz.mapper.quiz.AnswerMapper;
 import ru.project.quiz.mapper.quiz.QuestionMapper;
+import ru.project.quiz.repository.quiz.AnswerRepository;
 import ru.project.quiz.repository.quiz.QuestionRepository;
 import ru.project.quiz.service.quiz.QuestionService;
 
 import javax.annotation.PostConstruct;
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 @Service
+@Slf4j
 @AllArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
+    private final AnswerRepository answerRepository;
+    private final AnswerMapper answerMapper;
+    private final Validator validator;
 
     @PostConstruct
     private void getAllTablesID() {
@@ -30,18 +46,53 @@ public class QuestionServiceImpl implements QuestionService {
         return questionMapper.questionDTOFromQuestion(question);
     }
 
+
+    private final static String questionIsExistError = "Question is exist";
+    private final static String correctOrSizeError = "Кол-во правильных ответов должно быть 1, а вопросов 2 и больше";
+
     @Override
     public void saveQuestion(QuestionDTO questionDTO) {
-        Question question = questionMapper.questionFromQuestionDTO(questionDTO);
-        if (isExistQuestion(question)) {
-            throw new QuestionIsExistException("Question is exist");
+        log.info("Попытка сохранить вопрос");
+        Set<ConstraintViolation<QuestionDTO>> violations = validator.validate(questionDTO);
+
+        if (!violations.isEmpty()) {
+            log.error(violations.toString());
+            throw new ConstraintViolationException(violations);
         }
-        questionRepository.save(question);
+
+        Question question = questionMapper.questionFromQuestionDTO(questionDTO);
+
+        if (isExistQuestion(question)) {
+            log.error(questionIsExistError);
+            throw new QuestionIsExistException(questionIsExistError);
+        }
+
+        long countOfRightAnswers = questionDTO.getAnswers().stream()
+                .map(AnswerDTO::isCorrectAnswer)
+                .filter(correct -> correct)
+                .count();
+
+        if (countOfRightAnswers != 1 || questionDTO.getAnswers().size() < 2) {
+            log.error(correctOrSizeError);
+            throw new QuestionCreationException(correctOrSizeError);
+        }
+
+
+        List<Answer> answerList = new ArrayList<>();
+        questionDTO.getAnswers().forEach(answerDTO -> {
+            Answer answer = answerMapper.answerFromAnswerDTO(answerDTO);
+            answer.setQuestion(question);
+            answerList.add(answerRepository.save(answer));
+        });
+
+        question.setAnswers(answerList);
+        Question savedQuestion = questionRepository.save(question);
+        log.info("Вопрос с id: {} сохранен", savedQuestion);
     }
 
     @Override
     public void deleteQuestion(long id) {
-        if (!questionRepository.findById(id).isPresent()) {
+        if (questionRepository.findById(id).isEmpty()) {
             throw new QuestionNotFoundException("Question not found with id: " + id);
         } else {
             questionRepository.deleteById(id);

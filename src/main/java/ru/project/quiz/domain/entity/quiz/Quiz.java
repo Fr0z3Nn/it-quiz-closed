@@ -2,6 +2,8 @@ package ru.project.quiz.domain.entity.quiz;
 
 import lombok.*;
 import ru.project.quiz.domain.entity.ituser.ITUser;
+import ru.project.quiz.domain.enums.question.DifficultyType;
+import ru.project.quiz.domain.enums.question.QuizStatus;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,4 +33,7 @@ public class Quiz {
     @OneToMany(mappedBy = "quiz")
     private List<QuestionQuiz> questions;
 
+    @Column(name = "quiz_status")
+    @Enumerated(EnumType.STRING)
+    private QuizStatus quizStatus;
 }
