@@ -20,7 +20,7 @@ public class QuizController {
 
     @GetMapping(CREATE_QUIZ)
     public ResponseEntity<QuizDTO> getQuiz( HttpServletRequest httpServletRequest){
-        QuizDTO quiz = quizService.createQuiz();
+        QuizDTO quiz = quizService.createQuiz(2);
         return new ResponseEntity<>(quiz, HttpStatus.OK);
     }
 }

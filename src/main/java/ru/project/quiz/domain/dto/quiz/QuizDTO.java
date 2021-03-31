@@ -21,7 +21,10 @@ public class QuizDTO {
 
    private Long id;
 
+   private String description;
+
    private String name;
 
    private List<QuestionQuizDTO> questions;
+
 }

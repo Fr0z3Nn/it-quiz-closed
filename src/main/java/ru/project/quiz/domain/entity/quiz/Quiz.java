@@ -26,7 +26,7 @@ public class Quiz {
     //who create quiz
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
-    private ITUser userId;
+    private ITUser itUser;
 
     @OneToMany(mappedBy = "quiz")
     private List<QuestionQuiz> questions;

@@ -21,7 +21,7 @@ public class QuestionQuiz {
     @JoinColumn(name = "question_id", nullable = false)
     private Question question;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinColumn(name = "quiz_id", nullable = false)
     private Quiz quiz;
 }
