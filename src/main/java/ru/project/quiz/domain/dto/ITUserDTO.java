@@ -9,10 +9,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -33,14 +32,18 @@ public class ITUserDTO implements UserDetails {
     @NotBlank(message = "Пароль не должен быть пустым")
     String password;
 
+    @Email
+    @NotBlank
+    String email;
+
     private Set<RoleDTO> roles;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-       return this.getRoles().stream()
+        return this.getRoles().stream()
                 .map(roleDTO -> new SimpleGrantedAuthority(roleDTO.getRole().name()))
                 .collect(Collectors.toList());
-       //test
+        //test
     }
 
     @Override

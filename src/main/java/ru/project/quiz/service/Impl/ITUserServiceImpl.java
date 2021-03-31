@@ -14,7 +14,11 @@ import ru.project.quiz.handler.exception.IncorrectInputUserException;
 import ru.project.quiz.mapper.UserMapper;
 import ru.project.quiz.repository.UserRepository;
 import ru.project.quiz.service.ITUserService;
+import ru.project.quiz.service.MailService;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
+import javax.validation.Validator;
 import java.util.Optional;
 import java.util.Set;
 
@@ -23,7 +27,9 @@ import java.util.Set;
 public class ITUserServiceImpl implements UserDetailsService, ITUserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final MailService mailService;
     private final UserMapper userMapper;
+    private final Validator validator;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -36,18 +42,28 @@ public class ITUserServiceImpl implements UserDetailsService, ITUserService {
 
     @Override
     public void saveUser(ITUserDTO itUserDTO) {
+        Set<ConstraintViolation<ITUserDTO>> violations = validator.validate(itUserDTO);
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
         Optional<ITUser> optionalUser = userRepository.findUserByUsername(itUserDTO.getUsername());
         if (optionalUser.isPresent()) {
             throw new IncorrectInputUserException("Данный пользователь существует");
         } else {
+            String email = itUserDTO.getEmail();
+            if (userRepository.existsByEmail(email)) {
+                throw new IncorrectInputUserException("Пользователь с данной почтой уже существует");
+            }
             ITUser user = ITUser.builder()
                     .username(itUserDTO.getUsername())
+                    .email(email)
                     .password(bCryptPasswordEncoder.encode(itUserDTO.getPassword()))
                     .roles(
                             Set.of(Role.builder().role(RoleType.USER).build())
                     )
                     .build();
             userRepository.save(user);
+            mailService.registrationSuccessfulMessage(email);
         }
     }
 

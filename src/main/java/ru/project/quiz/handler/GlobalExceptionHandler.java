@@ -9,6 +9,8 @@ import ru.project.quiz.handler.exception.QuestionIsExistException;
 import ru.project.quiz.handler.exception.QuestionNotFoundException;
 import ru.project.quiz.handler.response.Response;
 
+import javax.validation.ConstraintViolationException;
+
 @RestControllerAdvice
 public class GlobalExceptionHandler {
     public GlobalExceptionHandler() {
@@ -17,7 +19,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({QuestionIsExistException.class,
             QuestionNotFoundException.class,
-            IncorrectInputUserException.class})
+            IncorrectInputUserException.class,
+            ConstraintViolationException.class})
     public ResponseEntity<Response> handleException(RuntimeException e) {
         return new ResponseEntity<>(new Response(e.getMessage()), HttpStatus.BAD_REQUEST);
     }

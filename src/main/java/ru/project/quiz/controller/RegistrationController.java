@@ -25,7 +25,7 @@ public class RegistrationController {
 
     @Operation(summary = "Регистрация")
     @PostMapping(REGISTER)
-    public ResponseEntity<Response> registration(@Valid @RequestBody ITUserDTO ITUserDTO) {
+    public ResponseEntity<Response> registration(@RequestBody ITUserDTO ITUserDTO) {
         userService.saveUser(ITUserDTO);
         return new ResponseEntity<>(new Response("Register success"), HttpStatus.OK);
     }

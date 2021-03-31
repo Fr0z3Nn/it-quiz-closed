@@ -29,6 +29,9 @@ public class ITUser {
     @Column(name = "password")
     private String password;
 
+    @Column(name = "email", unique = true)
+    String email;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumns({
             @JoinColumn(name = "role_id", referencedColumnName = "id"),
