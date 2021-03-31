@@ -1,8 +1,9 @@
 package ru.project.quiz.service.ituser;
 
 import ru.project.quiz.domain.dto.ituser.ITUserDTO;
+import ru.project.quiz.domain.enums.ituser.RoleType;
 
 public interface ITUserService {
     void saveUser(ITUserDTO ITUserDTO);
-    void setUserToAdmin(long id);
+    void setNewRole(String username, RoleType roleType);
 }

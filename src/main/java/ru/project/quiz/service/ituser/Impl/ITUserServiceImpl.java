@@ -69,14 +69,14 @@ public class ITUserServiceImpl implements UserDetailsService, ITUserService {
 
 
     @Override
-    public void setUserToAdmin(long id) {
-        Optional<ITUser> optionalITUser = userRepository.findById(id);
+    public void setNewRole(String username, RoleType roleType) {
+        Optional<ITUser> optionalITUser = userRepository.findUserByUsername(username);
         if (optionalITUser.isEmpty()) {
             throw new IncorrectInputUserException("Данный пользователь не существует");
         } else {
             ITUser user = optionalITUser.get();
             Set<Role> set = user.getRoles();
-            set.add(Role.builder().role(RoleType.ADMIN).build());
+            set.add(Role.builder().role(roleType).build());
             user.setRoles(set);
             userRepository.save(user);
         }
