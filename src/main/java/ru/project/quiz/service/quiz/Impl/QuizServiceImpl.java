@@ -7,16 +7,13 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.project.quiz.domain.dto.ituser.ITUserDTO;
-import ru.project.quiz.domain.dto.quiz.AnswerDTO;
 import ru.project.quiz.domain.dto.quiz.QuizDTO;
 import ru.project.quiz.domain.entity.ituser.ITUser;
 import ru.project.quiz.domain.entity.quiz.Question;
 import ru.project.quiz.domain.entity.quiz.QuestionQuiz;
 import ru.project.quiz.domain.entity.quiz.Quiz;
-import ru.project.quiz.domain.enums.question.QuizStatus;
 import ru.project.quiz.handler.exception.IncorrectInputUserException;
 import ru.project.quiz.handler.exception.QuestionNotFoundException;
-import ru.project.quiz.handler.exception.QuizNotFoundException;
 import ru.project.quiz.mapper.quiz.QuizMapper;
 import ru.project.quiz.repository.itquiz.UserRepository;
 import ru.project.quiz.repository.quiz.QuestionQuizRepository;
@@ -49,9 +46,13 @@ public class QuizServiceImpl implements QuizService {
     private final static String notEnoughQuestions = "В нашей базе данных нет столько вопросов, было добавлено ";
     private final static String userWhoTriedCreateQuestionIsNotExist = "Юзера, который пытается задать вопрос не существует";
     private final static String getRandomQuestionsError = "Ошибка в попытке получить список рандомных вопросов";
+    private final static String badNumberOfQuestions = "Количество вопросов должно быть больше 0";
 
     @Override
     public QuizDTO createQuiz(int numberOfQuestions) {
+        if(numberOfQuestions < 1){
+            throw new BadNumberOfQuestionsException(badNumberOfQuestions);
+        }
         log.info("Начат процесс генерации вопроса");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         ITUserDTO requestUser = (ITUserDTO) authentication.getPrincipal();

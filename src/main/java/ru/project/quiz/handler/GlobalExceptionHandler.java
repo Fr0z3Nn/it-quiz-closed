@@ -16,7 +16,11 @@ public class GlobalExceptionHandler {
         super();
     }
 
-    @ExceptionHandler({QuestionIsExistException.class,
+    @ExceptionHandler({
+            SampleExistException.class,
+            SampleNotFoundException.class,
+            BadNumberOfQuestionsException.class,
+            QuestionIsExistException.class,
             QuestionNotFoundException.class,
             IncorrectInputUserException.class,
             ConstraintViolationException.class,
