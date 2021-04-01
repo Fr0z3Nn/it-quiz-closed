@@ -24,4 +24,7 @@ public class QuestionQuiz {
     @ManyToOne(fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinColumn(name = "quiz_id", nullable = false)
     private Quiz quiz;
+
+    @Column(name = "ituser_choice")
+    private Long userChoice;
 }

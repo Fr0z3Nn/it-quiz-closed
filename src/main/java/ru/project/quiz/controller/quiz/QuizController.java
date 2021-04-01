@@ -18,14 +18,15 @@ public class QuizController {
     private final static String FINISH_QUIZ = "/finish";
 
     @GetMapping(CREATE_QUIZ)
-    public ResponseEntity<QuizDTO> getQuiz( HttpServletRequest httpServletRequest, @RequestParam int numberOfQuestions){
+    public ResponseEntity<QuizDTO> getQuiz(HttpServletRequest httpServletRequest, @RequestParam int numberOfQuestions) {
         QuizDTO quiz = quizService.createQuiz(numberOfQuestions);
         return new ResponseEntity<>(quiz, HttpStatus.OK);
     }
 
+
     @PostMapping(FINISH_QUIZ)
     @ResponseStatus(HttpStatus.OK)
-    public void finishQuiz (@RequestParam Long id){
-
+    public ResponseEntity<QuizDTO> finishQuiz(@RequestBody QuizDTO quizDTO) {
+        return new ResponseEntity<>(quizService.finishQuiz(quizDTO), HttpStatus.OK);
     }
 }

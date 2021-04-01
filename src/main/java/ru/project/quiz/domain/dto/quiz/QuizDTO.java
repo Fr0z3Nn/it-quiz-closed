@@ -30,4 +30,6 @@ public class QuizDTO {
    private List<QuestionQuizDTO> questions;
 
    private QuizStatus quizStatus;
+
+   private Long score;
 }

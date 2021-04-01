@@ -5,5 +5,5 @@ import ru.project.quiz.domain.dto.quiz.QuizDTO;
 
 public interface QuizService {
     QuizDTO createQuiz (int numberOfQuestions);
-    void finishQuiz ( Long id);
+    QuizDTO finishQuiz ( QuizDTO quizDTO);
 }

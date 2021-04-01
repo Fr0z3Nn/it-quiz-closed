@@ -19,4 +19,5 @@ public class QuestionQuizDTO {
 
     private QuestionDTO question;
 
+    private Long userChoice;
 }

@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import ru.project.quiz.domain.dto.ituser.ITUserDTO;
+import ru.project.quiz.domain.dto.quiz.AnswerDTO;
 import ru.project.quiz.domain.dto.quiz.QuizDTO;
 import ru.project.quiz.domain.entity.ituser.ITUser;
 import ru.project.quiz.domain.entity.quiz.Question;
@@ -98,10 +99,42 @@ public class QuizServiceImpl implements QuizService {
     }
 
     @Override
-    public void finishQuiz(Long id) {
-        Quiz quiz = quizRepository.findById(id).orElseThrow(() -> new QuizNotFoundException("Данного теста не существует"));
-        if (quiz.getQuizStatus() == QuizStatus.FINISHED) throw new QuestionNotFoundException("Данный вопрос уже завершен");
-        quiz.setQuizStatus(QuizStatus.FINISHED);
-        quizRepository.save(quiz);
+    public QuizDTO finishQuiz(QuizDTO quizDTO) {
+        Set<ConstraintViolation<QuizDTO>> violations = validator.validate(quizDTO);
+        if (!violations.isEmpty()) {
+            log.error(violations.toString());
+            throw new ConstraintViolationException(violations);
+        }
+        long countOfCorrectAnswers = quizDTO.getQuestions().stream().filter(
+                questionQuizDTO -> {
+                    Optional<AnswerDTO> answerDTO = questionQuizDTO.getQuestion().getAnswers().stream()
+                            .filter(AnswerDTO::isCorrectAnswer).findFirst();
+                    if (answerDTO.isEmpty()) {
+                        log.error("В вопросе {} нет правильного ответа.", questionQuizDTO);
+                        throw new QuestionNotFoundException("В вопросе " + questionQuizDTO + " нет правильного ответа.");
+                    }
+                    return answerDTO.get().getId() == questionQuizDTO.getUserChoice();
+                }
+        ).count();
+        quizDTO.setQuizStatus(QuizStatus.FINISHED);
+        quizDTO.setScore(countOfCorrectAnswers);
+        Long userIdByQuizID = quizRepository.getUserIdByQuizID(quizDTO.getId());
+        if (userIdByQuizID == null) {
+            log.error("У {} вопроса нет владельца", quizDTO);
+            throw new QuizNotFoundException("У данного вопроса нет владельца");
+        }
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        ITUserDTO requestUser = (ITUserDTO) authentication.getPrincipal();
+        Optional<ITUser> itUser = userRepository.findUserByUsername(requestUser.getUsername());
+        if (itUser.isEmpty()) {
+            log.error("Пользователя, пытающегося завершить тест не существует");
+            throw new IncorrectInputUserException("Пользователя, пытающегося завершить тест не существует");
+        }
+        Quiz finishedQuiz = quizMapper.quizFromQuizDTO(quizDTO);
+        finishedQuiz.setItUser(itUser.get());
+        log.info("Попытка сохранить решенный вопрос с id: {}", finishedQuiz.getId());
+        quizRepository.save(finishedQuiz);
+        log.info("Попытка успешна решенный вопрос с id: {} сохранен", finishedQuiz.getId());
+        return quizDTO;
     }
 }

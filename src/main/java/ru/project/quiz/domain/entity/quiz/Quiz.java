@@ -36,4 +36,7 @@ public class Quiz {
     @Column(name = "quiz_status")
     @Enumerated(EnumType.STRING)
     private QuizStatus quizStatus;
+
+    @Column(name = "score")
+    private Long score;
 }
