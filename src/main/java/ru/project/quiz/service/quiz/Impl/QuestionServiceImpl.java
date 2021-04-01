@@ -77,15 +77,7 @@ public class QuestionServiceImpl implements QuestionService {
             throw new QuestionCreationException(correctOrSizeError);
         }
 
-
-        List<Answer> answerList = new ArrayList<>();
-        questionDTO.getAnswers().forEach(answerDTO -> {
-            Answer answer = answerMapper.answerFromAnswerDTO(answerDTO);
-            answer.setQuestion(question);
-            answerList.add(answerRepository.save(answer));
-        });
-
-        question.setAnswers(answerList);
+        question.setAnswers(answerMapper.listAnswersFromListAnswersDTO(questionDTO.getAnswers()));
         Question savedQuestion = questionRepository.save(question);
         log.info("Вопрос с id: {} сохранен", savedQuestion);
     }

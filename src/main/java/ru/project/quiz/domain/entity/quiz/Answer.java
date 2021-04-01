@@ -23,10 +23,7 @@ public class Answer {
     @Column(name = "is_correct")
     boolean isCorrectAnswer;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "question_id", nullable = false)
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
+    @ManyToOne
     private Question question;
 
 

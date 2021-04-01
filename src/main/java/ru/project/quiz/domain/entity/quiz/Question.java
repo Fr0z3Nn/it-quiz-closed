@@ -36,7 +36,8 @@ public class Question {
     @Column(name = "category_type")
     CategoryType categoryType;
 
-    @OneToMany(mappedBy = "question")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "question_id")
     private List<Answer> answers;
 
 }
