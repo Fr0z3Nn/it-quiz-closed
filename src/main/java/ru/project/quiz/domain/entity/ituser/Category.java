@@ -24,6 +24,5 @@ public class Category {
     private CategoryType category;
 
     @ManyToOne
-
     private QuizSample quizSample;
 }

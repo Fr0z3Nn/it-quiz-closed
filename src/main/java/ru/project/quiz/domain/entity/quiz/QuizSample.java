@@ -17,12 +17,16 @@ public class QuizSample {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    long id;
+    private long id;
+
+
+    @OneToMany(mappedBy = "quizSample")
+    private List<Quiz> quizes;
 
     @Column(name = "name", unique = true)
-    String name;
+    private String name;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "quiz_sample_id")
-    List<Category> categories;
+    private List<Category> categories;
 }

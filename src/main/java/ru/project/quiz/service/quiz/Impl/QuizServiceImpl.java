@@ -15,14 +15,16 @@ import ru.project.quiz.domain.entity.quiz.QuestionQuiz;
 import ru.project.quiz.domain.entity.quiz.Quiz;
 import ru.project.quiz.domain.enums.question.QuizStatus;
 import ru.project.quiz.handler.exception.BadNumberOfQuestionsException;
-import ru.project.quiz.handler.exception.IncorrectInputUserException;
-import ru.project.quiz.handler.exception.QuestionNotFoundException;
+import ru.project.quiz.domain.entity.quiz.QuizSample;
+import ru.project.quiz.domain.enums.question.QuizStatus;
+import ru.project.quiz.handler.exception.*;
 import ru.project.quiz.handler.exception.QuizNotFoundException;
 import ru.project.quiz.mapper.quiz.QuizMapper;
 import ru.project.quiz.repository.itquiz.UserRepository;
 import ru.project.quiz.repository.quiz.QuestionQuizRepository;
 import ru.project.quiz.repository.quiz.QuestionRepository;
 import ru.project.quiz.repository.quiz.QuizRepository;
+import ru.project.quiz.repository.quiz.QuizSampleRepository;
 import ru.project.quiz.service.quiz.QuizService;
 
 import javax.validation.ConstraintViolation;
@@ -42,6 +44,7 @@ public class QuizServiceImpl implements QuizService {
     private final QuestionRepository questionRepository;
     private final QuestionQuizRepository questionQuizRepository;
     private final UserRepository userRepository;
+    private final QuizSampleRepository quizSampleRepository;
     private final QuizMapper quizMapper;
     private final Validator validator;
 
@@ -52,8 +55,9 @@ public class QuizServiceImpl implements QuizService {
     private final static String getRandomQuestionsError = "Ошибка в попытке получить список рандомных вопросов";
     private final static String badNumberOfQuestions = "Количество вопросов должно быть больше 0";
 
+    //TODO поправить метод
     @Override
-    public QuizDTO createQuiz(int numberOfQuestions) {
+    public QuizDTO createQuiz(int numberOfQuestions, String quizName) {
         if(numberOfQuestions < 1){
             throw new BadNumberOfQuestionsException(badNumberOfQuestions);
         }
@@ -68,7 +72,6 @@ public class QuizServiceImpl implements QuizService {
         String userUsername = user.get().getUsername();
         log.info("Попытка начать генерацию теста от {} успешна", userUsername);
         Quiz quiz = Quiz.builder()
-                .name("ИМЯ ТЕСТА ПОКА ПОСТОЯННОЕ")
                 .quizStatus(QuizStatus.CREATED)
                 .itUser(user.get())
                 .build();
@@ -78,17 +81,7 @@ public class QuizServiceImpl implements QuizService {
             log.error(getRandomQuestionsError);
             throw new QuestionNotFoundException(getRandomQuestionsError);
         }
-        List<QuestionQuiz> questionQuizList = listOfRandomQuestions.stream().map(question -> {
-            QuestionQuiz questionQuiz = QuestionQuiz.builder()
-                    .quiz(quiz)
-                    .question(question)
-                    .build();
-            return questionQuizRepository.saveAndFlush(questionQuiz);
-        }).collect(Collectors.toList());
-
-        quiz.setQuestions(questionQuizList);
-        Quiz quizAfterSave = quizRepository.saveAndFlush(quiz);
-        QuizDTO quizDTO = quizMapper.quizDTOFromQuiz(quizAfterSave);
+        QuizDTO quizDTO = quizMapper.quizDTOFromQuiz(quiz);
         Set<ConstraintViolation<QuizDTO>> violations = validator.validate(quizDTO);
         if (!violations.isEmpty()) {
             log.error(violations.toString());
@@ -99,6 +92,25 @@ public class QuizServiceImpl implements QuizService {
                 notEnoughQuestions + listOfRandomQuestions.size();
         log.info(description);
         quizDTO.setDescription(description);
+
+        Optional<QuizSample> quizSampleOptional = quizSampleRepository.findByName(quizName);
+        if (quizSampleOptional.isEmpty()){
+            log.error("Семпл не найден с именем:  {}", quizName);
+            throw new SampleNotFoundException("Семпл не найден");
+        }
+        QuizSample quizSample = quizSampleOptional.get();
+        quizDTO.setName(quizSample.getName());
+        List<QuestionQuiz> questionQuizList = listOfRandomQuestions.stream().map(question -> {
+            QuestionQuiz questionQuiz = QuestionQuiz.builder()
+                    .quiz(quiz)
+                    .question(question)
+                    .build();
+            return questionQuizRepository.saveAndFlush(questionQuiz);
+        }).collect(Collectors.toList());
+        quiz.setQuizSample(quizSample);
+        quiz.setQuestions(questionQuizList);
+        quizRepository.saveAndFlush(quiz);
+
         log.info("{} успешно сгенрировал тест c id : {}", userUsername, quizDTO.getId());
         return quizDTO;
     }

@@ -5,14 +5,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import ru.project.quiz.domain.dto.ituser.ITUserDTO;
-import ru.project.quiz.domain.entity.ituser.ITUser;
-import ru.project.quiz.domain.entity.quiz.Question;
-import ru.project.quiz.domain.entity.quiz.QuestionQuiz;
-import ru.project.quiz.domain.entity.quiz.Quiz;
-import ru.project.quiz.domain.enums.question.DifficultyType;
+import ru.project.quiz.domain.entity.quiz.QuizSample;
 import ru.project.quiz.domain.enums.question.QuizStatus;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Data
@@ -28,6 +23,8 @@ public class QuizDTO {
    private String name;
 
    private List<QuestionQuizDTO> questions;
+
+   private ITUserDTO itUser;
 
    private QuizStatus quizStatus;
 

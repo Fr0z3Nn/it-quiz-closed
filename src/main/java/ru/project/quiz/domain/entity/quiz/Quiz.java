@@ -22,8 +22,9 @@ public class Quiz {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "quiz_name")
-    private String name;
+    @ManyToOne
+    @JoinColumn(name = "quiz_sample_name")
+    private QuizSample quizSample;
 
     //who create quiz
     @ManyToOne

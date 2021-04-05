@@ -17,6 +17,8 @@ public class QuizSampleDTO {
 
     long id;
 
+    List<QuizDTO> quizes;
+
     String name;
 
 
