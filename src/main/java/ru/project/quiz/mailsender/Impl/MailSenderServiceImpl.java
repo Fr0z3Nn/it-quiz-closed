@@ -3,6 +3,7 @@ package ru.project.quiz.mailsender.Impl;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,12 +18,15 @@ import java.util.Properties;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Slf4j
 public class MailSenderServiceImpl implements MailSenderService {
 
     @Value("${mail-sender.email}")
     private String username;
     @Value("${mail-sender.password}")
     private String password;
+    @Value("${mail-sender.active}")
+    private String active;
     @Autowired
     private Properties props;
 
@@ -38,6 +42,10 @@ public class MailSenderServiceImpl implements MailSenderService {
             "<p><span style=\"text-decoration: underline;\"><span style=\"color: #3366ff; text-decoration: underline;\"><img src=\"https://i.ibb.co/5MjPghB/lk0iec-X2p-RU.jpg\" alt=\"\" width=\"687\" height=\"386\" /></span></span></p>";
 
     public void send(String subject, String text, String toEmail) {
+        if (active.equals("disable")) {
+            log.warn("Отправка на почту отключена, будьте внимательны!");
+            return;
+        }
         Session session = Session.getInstance(props, new Authenticator() {
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(username, password);
