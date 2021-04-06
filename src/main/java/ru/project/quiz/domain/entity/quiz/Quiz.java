@@ -2,7 +2,6 @@ package ru.project.quiz.domain.entity.quiz;
 
 import lombok.*;
 import ru.project.quiz.domain.entity.ituser.ITUser;
-import ru.project.quiz.domain.enums.question.DifficultyType;
 import ru.project.quiz.domain.enums.question.QuizStatus;
 
 import javax.persistence.*;
@@ -31,7 +30,8 @@ public class Quiz {
     @JoinColumn(name = "user_id", nullable = false)
     private ITUser itUser;
 
-    @OneToMany(mappedBy = "quiz")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "quiz_id")
     private List<QuestionQuiz> questions;
 
     @Column(name = "quiz_status")

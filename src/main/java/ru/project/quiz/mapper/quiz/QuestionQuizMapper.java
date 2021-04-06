@@ -10,11 +10,11 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface QuestionQuizMapper {
-    QuestionQuiz questionQuizFromQuestionQuizDTO(QuestionQuizDTO RoleDTO);
+    QuestionQuiz questionQuizFromQuestionQuizDTO(QuestionQuizDTO questionQuizDTO);
 
-    QuestionQuizDTO questionQuizDTOFromQuestionQuiz(QuestionQuiz Role);
+    QuestionQuizDTO questionQuizDTOFromQuestionQuiz(QuestionQuiz questionQuiz);
 
-    List<QuestionQuiz> listQuestionQuizFromQuestionQuizDTO(List<QuestionQuizDTO> RoleDTO);
+    List<QuestionQuiz> listQuestionQuizFromQuestionQuizDTO(List<QuestionQuizDTO> listQuestionQuizDTO);
 
-    List<QuestionQuizDTO> listQuestionQuizDTOFromQuestionQuiz(List<QuestionQuiz> Role);
+    List<QuestionQuizDTO> listQuestionQuizDTOFromQuestionQuiz(List<QuestionQuiz> listQuestionQuiz);
 }

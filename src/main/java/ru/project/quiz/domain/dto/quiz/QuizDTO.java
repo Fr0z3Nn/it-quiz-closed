@@ -24,8 +24,6 @@ public class QuizDTO {
 
    private List<QuestionQuizDTO> questions;
 
-   private ITUserDTO itUser;
-
    private QuizStatus quizStatus;
 
    private Long score;

@@ -6,8 +6,8 @@ import ru.project.quiz.domain.entity.quiz.Quiz;
 
 @Mapper(componentModel = "spring")
 public interface QuizMapper {
-    Quiz quizFromQuizDTO(QuizDTO RoleDTO);
+    Quiz quizFromQuizDTO(QuizDTO quizDTO);
 
-    QuizDTO quizDTOFromQuiz(Quiz Role);
+    QuizDTO quizDTOFromQuiz(Quiz quiz);
 
 }
