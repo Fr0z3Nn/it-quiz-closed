@@ -4,18 +4,13 @@ import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
-import ru.project.quiz.domain.dto.ituser.CategoryDTO;
 import ru.project.quiz.domain.dto.quiz.QuizSampleDTO;
-import ru.project.quiz.domain.entity.ituser.Category;
 import ru.project.quiz.domain.entity.quiz.QuizSample;
 import ru.project.quiz.handler.exception.SampleExistException;
 import ru.project.quiz.handler.exception.SampleNotFoundException;
-import ru.project.quiz.mapper.ituser.CategoryMapper;
 import ru.project.quiz.mapper.quiz.QuizSampleMapper;
 import ru.project.quiz.repository.quiz.QuizSampleRepository;
 import ru.project.quiz.service.quiz.QuizSampleService;
-
-import java.util.Arrays;
 
 @Service
 @AllArgsConstructor

@@ -10,16 +10,11 @@ import ru.project.quiz.domain.dto.ituser.ITUserDTO;
 import ru.project.quiz.domain.dto.quiz.AnswerDTO;
 import ru.project.quiz.domain.dto.quiz.QuizDTO;
 import ru.project.quiz.domain.entity.ituser.ITUser;
-import ru.project.quiz.domain.entity.quiz.Question;
-import ru.project.quiz.domain.entity.quiz.QuestionQuiz;
-import ru.project.quiz.domain.entity.quiz.Quiz;
-import ru.project.quiz.domain.entity.quiz.QuizSample;
+import ru.project.quiz.domain.entity.quiz.*;
 import ru.project.quiz.domain.enums.question.QuizStatus;
 import ru.project.quiz.handler.exception.*;
-import ru.project.quiz.mapper.quiz.QuestionQuizMapper;
 import ru.project.quiz.mapper.quiz.QuizMapper;
 import ru.project.quiz.repository.itquiz.UserRepository;
-import ru.project.quiz.repository.quiz.QuestionQuizRepository;
 import ru.project.quiz.repository.quiz.QuestionRepository;
 import ru.project.quiz.repository.quiz.QuizRepository;
 import ru.project.quiz.repository.quiz.QuizSampleRepository;
@@ -71,18 +66,21 @@ public class QuizServiceImpl implements QuizService {
                 .itUser(user.get())
                 .build();
 
-        List<Question> listOfRandomQuestions = questionRepository.getListOfRandomQuestions(numberOfQuestions);
-        if (listOfRandomQuestions.isEmpty()) {
-            log.error(getRandomQuestionsError);
-            throw new QuestionNotFoundException(getRandomQuestionsError);
-        }
-
         Optional<QuizSample> quizSampleOptional = quizSampleRepository.findByName(quizName);
         if (quizSampleOptional.isEmpty()) {
             log.error("Семпл не найден с именем:  {}", quizName);
             throw new SampleNotFoundException("Семпл не найден");
         }
         QuizSample quizSample = quizSampleOptional.get();
+
+        List<Question> listOfRandomQuestions = questionRepository.getListQuestionsBySampleName(
+                numberOfQuestions,
+                quizSample.getCategories().stream().map(category -> category.getCategory().name()).collect(Collectors.toList()));
+        if (listOfRandomQuestions.isEmpty()) {
+            log.error(getRandomQuestionsError);
+            throw new QuestionNotFoundException(getRandomQuestionsError);
+        }
+
         List<QuestionQuiz> questionQuizList = listOfRandomQuestions.stream().map(question -> QuestionQuiz.builder()
                 .question(question)
                 .build()).collect(Collectors.toList());

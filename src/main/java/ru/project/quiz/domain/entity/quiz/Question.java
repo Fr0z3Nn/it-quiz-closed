@@ -34,6 +34,7 @@ public class Question {
     DifficultyType difficultyType;
 
     @Column(name = "category_type")
+    @Enumerated(EnumType.STRING)
     CategoryType categoryType;
 
     @OneToMany(cascade = CascadeType.ALL)

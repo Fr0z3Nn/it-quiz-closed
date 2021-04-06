@@ -1,7 +1,6 @@
 package ru.project.quiz.domain.entity.quiz;
 
 import lombok.*;
-import ru.project.quiz.domain.entity.ituser.Category;
 
 import javax.persistence.*;
 import java.util.List;

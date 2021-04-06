@@ -1,8 +1,8 @@
-package ru.project.quiz.mapper.ituser;
+package ru.project.quiz.mapper.quiz;
 
 import org.mapstruct.Mapper;
-import ru.project.quiz.domain.dto.ituser.CategoryDTO;
-import ru.project.quiz.domain.entity.ituser.Category;
+import ru.project.quiz.domain.dto.quiz.CategoryDTO;
+import ru.project.quiz.domain.entity.quiz.Category;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {

@@ -1,4 +1,4 @@
-package ru.project.quiz.domain.entity.ituser;
+package ru.project.quiz.domain.entity.quiz;
 
 import lombok.*;
 import ru.project.quiz.domain.entity.quiz.QuizSample;
