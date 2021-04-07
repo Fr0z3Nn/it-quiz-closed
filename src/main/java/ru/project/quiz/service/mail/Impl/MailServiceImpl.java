@@ -7,11 +7,13 @@ import ru.project.quiz.mailsender.MailSenderService;
 import ru.project.quiz.service.mail.MailService;
 
 @Service
-@Data
-@AllArgsConstructor
 public class MailServiceImpl implements MailService {
 
     private final MailSenderService mailSenderService;
+
+    public MailServiceImpl(MailSenderService mailSenderService) {
+        this.mailSenderService = mailSenderService;
+    }
 
     private final static String registrationSuccessfulMessageSubject = "Успешная регистрация";
     private final static String registrationSuccessfulMessageText = "Спасибо, что выбрали наш сервис!";

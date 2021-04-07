@@ -1,10 +1,6 @@
 package ru.project.quiz.mailsender.Impl;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.project.quiz.mailsender.MailSenderService;
@@ -15,9 +11,6 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 @Service
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Slf4j
 public class MailSenderServiceImpl implements MailSenderService {
 
@@ -27,8 +20,7 @@ public class MailSenderServiceImpl implements MailSenderService {
     private String password;
     @Value("${mail-sender.active}")
     private String active;
-    @Autowired
-    private Properties props;
+    private final Properties props;
 
     private final static String welcomeMessage = "<h1 style=\"text-align: center;\">Добро пожаловать в <span style=\"color: #ff9900;\">QUIZ</span>.</h1>\n" +
             "<p><span style=\"text-decoration: underline;\">У нас есть множество тестов для решения, а также:</span></p>\n" +
@@ -63,4 +55,37 @@ public class MailSenderServiceImpl implements MailSenderService {
             throw new RuntimeException(e);
         }
     }
+
+    public MailSenderServiceImpl(Properties props) {
+        this.props = props;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getActive() {
+        return active;
+    }
+
+    public void setActive(String active) {
+        this.active = active;
+    }
+
+    public Properties getProps() {
+        return props;
+    }
+
 }

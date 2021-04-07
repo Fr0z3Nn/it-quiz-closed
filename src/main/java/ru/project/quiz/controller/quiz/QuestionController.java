@@ -2,7 +2,6 @@ package ru.project.quiz.controller.quiz;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,7 +32,7 @@ public class QuestionController {
 
     @Operation(summary = "Добавление вопроса")
     @PostMapping(ADD_QUESTION)
-    public ResponseEntity<Response> addQuestion(@Valid @RequestBody QuestionDTO questionDTO) {
+    public ResponseEntity<Response> addQuestion(@RequestBody QuestionDTO questionDTO) {
         questionService.saveQuestion(questionDTO);
         return new ResponseEntity<>(new Response("Question is added"), HttpStatus.OK);
     }

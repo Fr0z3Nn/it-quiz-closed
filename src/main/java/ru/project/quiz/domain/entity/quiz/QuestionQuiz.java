@@ -1,21 +1,15 @@
 package ru.project.quiz.domain.entity.quiz;
 
-import lombok.*;
-
 import javax.persistence.*;
+import java.util.Objects;
 
-@Data
 @Entity
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@EqualsAndHashCode
 @Table(name = "questions_quiz")
 public class QuestionQuiz {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    long id;
+    private long id;
 
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)
@@ -26,4 +20,58 @@ public class QuestionQuiz {
 
     @Column(name = "ituser_choice")
     private Long userChoice;
+
+    public QuestionQuiz(Question question, Quiz quiz, Long userChoice) {
+        this.question = question;
+        this.quiz = quiz;
+        this.userChoice = userChoice;
+    }
+
+    public QuestionQuiz() {
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        QuestionQuiz that = (QuestionQuiz) o;
+        return Objects.equals(question, that.question) && Objects.equals(quiz, that.quiz) && Objects.equals(userChoice, that.userChoice);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(question, quiz, userChoice);
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Question getQuestion() {
+        return question;
+    }
+
+    public void setQuestion(Question question) {
+        this.question = question;
+    }
+
+    public Quiz getQuiz() {
+        return quiz;
+    }
+
+    public void setQuiz(Quiz quiz) {
+        this.quiz = quiz;
+    }
+
+    public Long getUserChoice() {
+        return userChoice;
+    }
+
+    public void setUserChoice(Long userChoice) {
+        this.userChoice = userChoice;
+    }
 }

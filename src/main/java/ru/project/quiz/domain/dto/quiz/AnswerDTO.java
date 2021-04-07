@@ -1,20 +1,45 @@
 package ru.project.quiz.domain.dto.quiz;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.*;
 
-import java.util.List;
-
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class AnswerDTO {
 
     @Schema(description = "ID", accessMode = Schema.AccessMode.READ_ONLY)
-    long id;
+    private long id;
 
-    String name;
+    private String name;
 
-    boolean isCorrectAnswer;
+    private boolean isCorrectAnswer;
+
+    public AnswerDTO(String name, boolean isCorrectAnswer) {
+        this.name = name;
+        this.isCorrectAnswer = isCorrectAnswer;
+    }
+
+    public AnswerDTO() {
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public boolean isCorrectAnswer() {
+        return isCorrectAnswer;
+    }
+
+    public void setCorrectAnswer(boolean correctAnswer) {
+        isCorrectAnswer = correctAnswer;
+    }
 }

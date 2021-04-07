@@ -28,13 +28,20 @@ import java.util.Set;
 
 @Service
 @Slf4j
-@AllArgsConstructor
 public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
     private final AnswerRepository answerRepository;
     private final AnswerMapper answerMapper;
     private final Validator validator;
+
+    public QuestionServiceImpl(QuestionRepository questionRepository, QuestionMapper questionMapper, AnswerRepository answerRepository, AnswerMapper answerMapper, Validator validator) {
+        this.questionRepository = questionRepository;
+        this.questionMapper = questionMapper;
+        this.answerRepository = answerRepository;
+        this.answerMapper = answerMapper;
+        this.validator = validator;
+    }
 
     @PostConstruct
     private void getAllTablesID() {

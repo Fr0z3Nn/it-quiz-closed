@@ -13,11 +13,15 @@ import ru.project.quiz.repository.quiz.QuizSampleRepository;
 import ru.project.quiz.service.quiz.QuizSampleService;
 
 @Service
-@AllArgsConstructor
 public class QuizSampleServiceImpl implements QuizSampleService {
 
     public final QuizSampleRepository quizSampleRepository;
     public final QuizSampleMapper quizSampleMapper;
+
+    public QuizSampleServiceImpl(QuizSampleRepository quizSampleRepository, QuizSampleMapper quizSampleMapper) {
+        this.quizSampleRepository = quizSampleRepository;
+        this.quizSampleMapper = quizSampleMapper;
+    }
 
     @Override
     public void saveSample(QuizSampleDTO quizSampleDTO) {

@@ -1,7 +1,6 @@
 
 package ru.project.quiz.service.quiz.Impl;
 
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -10,7 +9,10 @@ import ru.project.quiz.domain.dto.ituser.ITUserDTO;
 import ru.project.quiz.domain.dto.quiz.AnswerDTO;
 import ru.project.quiz.domain.dto.quiz.QuizDTO;
 import ru.project.quiz.domain.entity.ituser.ITUser;
-import ru.project.quiz.domain.entity.quiz.*;
+import ru.project.quiz.domain.entity.quiz.Question;
+import ru.project.quiz.domain.entity.quiz.QuestionQuiz;
+import ru.project.quiz.domain.entity.quiz.Quiz;
+import ru.project.quiz.domain.entity.quiz.QuizSample;
 import ru.project.quiz.domain.enums.question.QuizStatus;
 import ru.project.quiz.handler.exception.*;
 import ru.project.quiz.mapper.quiz.QuizMapper;
@@ -30,15 +32,22 @@ import java.util.stream.Collectors;
 
 @Service
 @Slf4j
-@AllArgsConstructor
 public class QuizServiceImpl implements QuizService {
-
     private final QuizRepository quizRepository;
     private final QuestionRepository questionRepository;
     private final UserRepository userRepository;
     private final QuizSampleRepository quizSampleRepository;
     private final QuizMapper quizMapper;
     private final Validator validator;
+
+    public QuizServiceImpl(QuizRepository quizRepository, QuestionRepository questionRepository, UserRepository userRepository, QuizSampleRepository quizSampleRepository, QuizMapper quizMapper, Validator validator) {
+        this.quizRepository = quizRepository;
+        this.questionRepository = questionRepository;
+        this.userRepository = userRepository;
+        this.quizSampleRepository = quizSampleRepository;
+        this.quizMapper = quizMapper;
+        this.validator = validator;
+    }
 
     private final static String allQuestionsSuccessfullyAdded = "Все вопросы удачно добавлены";
     private final static String notEnoughQuestions = "В нашей базе данных нет столько вопросов, было добавлено ";
@@ -61,10 +70,9 @@ public class QuizServiceImpl implements QuizService {
         }
         String userUsername = user.get().getUsername();
         log.info("Попытка начать генерацию теста от {} успешна", userUsername);
-        Quiz quiz = Quiz.builder()
-                .quizStatus(QuizStatus.CREATED)
-                .itUser(user.get())
-                .build();
+        Quiz quiz = new Quiz();
+        quiz.setQuizStatus(QuizStatus.CREATED);
+        quiz.setItUser(user.get());
 
         Optional<QuizSample> quizSampleOptional = quizSampleRepository.findByName(quizName);
         if (quizSampleOptional.isEmpty()) {
@@ -81,9 +89,11 @@ public class QuizServiceImpl implements QuizService {
             throw new QuestionNotFoundException(getRandomQuestionsError);
         }
 
-        List<QuestionQuiz> questionQuizList = listOfRandomQuestions.stream().map(question -> QuestionQuiz.builder()
-                .question(question)
-                .build()).collect(Collectors.toList());
+        List<QuestionQuiz> questionQuizList = listOfRandomQuestions.stream().map(question -> {
+            QuestionQuiz questionQuiz = new QuestionQuiz();
+            questionQuiz.setQuestion(question);
+            return questionQuiz;
+        }).collect(Collectors.toList());
 
         quiz.setQuizSample(quizSample);
         quiz.setQuestions(questionQuizList);

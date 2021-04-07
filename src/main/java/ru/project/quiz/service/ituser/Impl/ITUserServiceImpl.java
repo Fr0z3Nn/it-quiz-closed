@@ -1,6 +1,5 @@
 package ru.project.quiz.service.ituser.Impl;
 
-import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -23,13 +22,20 @@ import java.util.Optional;
 import java.util.Set;
 
 @Service
-@AllArgsConstructor
 public class ITUserServiceImpl implements UserDetailsService, ITUserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final MailService mailService;
     private final UserMapper userMapper;
     private final Validator validator;
+
+    public ITUserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, MailService mailService, UserMapper userMapper, Validator validator) {
+        this.userRepository = userRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.mailService = mailService;
+        this.userMapper = userMapper;
+        this.validator = validator;
+    }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -54,14 +60,11 @@ public class ITUserServiceImpl implements UserDetailsService, ITUserService {
             if (userRepository.existsByEmail(email)) {
                 throw new IncorrectInputUserException("Пользователь с данной почтой уже существует");
             }
-            ITUser user = ITUser.builder()
-                    .username(itUserDTO.getUsername())
-                    .email(email)
-                    .password(bCryptPasswordEncoder.encode(itUserDTO.getPassword()))
-                    .roles(
-                            Set.of(Role.builder().role(RoleType.USER).build())
-                    )
-                    .build();
+            ITUser user = new ITUser();
+            user.setUsername(itUserDTO.getUsername());
+            user.setEmail(email);
+            user.setPassword(bCryptPasswordEncoder.encode(itUserDTO.getPassword()));
+            user.setRoles(Set.of(new Role(RoleType.USER)));
             userRepository.save(user);
             mailService.registrationSuccessfulMessage(email);
         }
@@ -76,7 +79,7 @@ public class ITUserServiceImpl implements UserDetailsService, ITUserService {
         } else {
             ITUser user = optionalITUser.get();
             Set<Role> set = user.getRoles();
-            set.add(Role.builder().role(roleType).build());
+            set.add(new Role(roleType));
             user.setRoles(set);
             userRepository.save(user);
         }
