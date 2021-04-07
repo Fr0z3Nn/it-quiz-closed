@@ -14,7 +14,6 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/quiz_sample")
-@AllArgsConstructor
 @Tag(name = "Контроллер сэмплов")
 public class QuizSampleController {
     public final QuizSampleService quizSampleService;
@@ -42,5 +41,9 @@ public class QuizSampleController {
     public ResponseEntity<Response> deleteQuestion(@RequestParam long id) {
         quizSampleService.deleteSample(id);
         return new ResponseEntity<>(new Response("QuizSample has been deleted"), HttpStatus.OK);
+    }
+
+    public QuizSampleController(QuizSampleService quizSampleService) {
+        this.quizSampleService = quizSampleService;
     }
 }

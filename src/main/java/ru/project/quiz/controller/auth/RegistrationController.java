@@ -16,7 +16,6 @@ import ru.project.quiz.service.ituser.ITUserService;
 @RestController
 @RequestMapping("/auth")
 @Tag(name = "Регистрация")
-@AllArgsConstructor
 public class RegistrationController {
     public final ITUserService userService;
     public final String REGISTER = "/register";
@@ -26,5 +25,9 @@ public class RegistrationController {
     public ResponseEntity<Response> registration(@RequestBody ITUserDTO ITUserDTO) {
         userService.saveUser(ITUserDTO);
         return new ResponseEntity<>(new Response("Register success"), HttpStatus.OK);
+    }
+
+    public RegistrationController(ITUserService userService) {
+        this.userService = userService;
     }
 }

@@ -14,7 +14,6 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api/question")
-@AllArgsConstructor
 @Tag(name = "Контроллер вопросов")
 public class QuestionController {
 
@@ -51,5 +50,9 @@ public class QuestionController {
     public ResponseEntity<Response> editQuestion(@Valid @RequestBody QuestionDTO questionDTO, @PathVariable long id) {
         questionService.editQuestion(questionDTO, id);
         return new ResponseEntity<>(new Response("Question has been edited"), HttpStatus.OK);
+    }
+
+    public QuestionController(QuestionService questionService) {
+        this.questionService = questionService;
     }
 }

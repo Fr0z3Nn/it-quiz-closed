@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/api/quiz")
-@AllArgsConstructor
 public class QuizController {
     private final QuizService quizService;
     private final static String CREATE_QUIZ = "/create";
@@ -29,5 +28,9 @@ public class QuizController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<QuizDTO> finishQuiz(@RequestBody QuizDTO quizDTO) {
         return new ResponseEntity<>(quizService.finishQuiz(quizDTO), HttpStatus.OK);
+    }
+
+    public QuizController(QuizService quizService) {
+        this.quizService = quizService;
     }
 }
