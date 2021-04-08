@@ -1,6 +1,7 @@
 package ru.project.quiz.mailsender.Impl;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.project.quiz.mailsender.MailSenderService;
@@ -11,7 +12,6 @@ import javax.mail.internet.MimeMessage;
 import java.util.Properties;
 
 @Service
-@Slf4j
 public class MailSenderServiceImpl implements MailSenderService {
 
     @Value("${mail-sender.email}")
@@ -21,6 +21,8 @@ public class MailSenderServiceImpl implements MailSenderService {
     @Value("${mail-sender.active}")
     private String active;
     private final Properties props;
+
+    Logger log = LoggerFactory.getLogger(MailSenderServiceImpl.class);
 
     private final static String welcomeMessage = "<h1 style=\"text-align: center;\">Добро пожаловать в <span style=\"color: #ff9900;\">QUIZ</span>.</h1>\n" +
             "<p><span style=\"text-decoration: underline;\">У нас есть множество тестов для решения, а также:</span></p>\n" +

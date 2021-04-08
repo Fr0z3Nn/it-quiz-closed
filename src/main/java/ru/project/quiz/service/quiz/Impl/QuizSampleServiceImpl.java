@@ -1,6 +1,5 @@
 package ru.project.quiz.service.quiz.Impl;
 
-import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;

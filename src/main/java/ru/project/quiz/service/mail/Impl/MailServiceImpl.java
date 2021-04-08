@@ -1,7 +1,5 @@
 package ru.project.quiz.service.mail.Impl;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.stereotype.Service;
 import ru.project.quiz.mailsender.MailSenderService;
 import ru.project.quiz.service.mail.MailService;

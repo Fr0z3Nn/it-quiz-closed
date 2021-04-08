@@ -1,13 +1,13 @@
 package ru.project.quiz.service.quiz.Impl;
 
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 import ru.project.quiz.domain.dto.quiz.AnswerDTO;
 import ru.project.quiz.domain.dto.quiz.QuestionDTO;
-import ru.project.quiz.domain.entity.quiz.Answer;
 import ru.project.quiz.domain.entity.quiz.Question;
 import ru.project.quiz.handler.exception.QuestionCreationException;
 import ru.project.quiz.handler.exception.QuestionIsExistException;
@@ -22,18 +22,17 @@ import javax.annotation.PostConstruct;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Set;
 
 @Service
-@Slf4j
 public class QuestionServiceImpl implements QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
     private final AnswerRepository answerRepository;
     private final AnswerMapper answerMapper;
     private final Validator validator;
+
+    Logger log = LoggerFactory.getLogger(QuestionServiceImpl.class);
 
     public QuestionServiceImpl(QuestionRepository questionRepository, QuestionMapper questionMapper, AnswerRepository answerRepository, AnswerMapper answerMapper, Validator validator) {
         this.questionRepository = questionRepository;

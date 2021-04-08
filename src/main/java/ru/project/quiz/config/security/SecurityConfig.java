@@ -1,6 +1,5 @@
 package ru.project.quiz.config.security;
 
-import lombok.AllArgsConstructor;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -14,13 +13,17 @@ import ru.project.quiz.service.ituser.Impl.ITUserServiceImpl;
 
 
 @Configuration
-@AllArgsConstructor
 @EnableWebSecurity
 @EnableConfigurationProperties
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebMvcConfigurer {
 
     private final ITUserServiceImpl itUserService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    public SecurityConfig(ITUserServiceImpl itUserService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.itUserService = itUserService;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

@@ -1,6 +1,5 @@
 package ru.project.quiz.domain.entity.quiz;
 
-import lombok.*;
 import ru.project.quiz.domain.entity.ituser.ITUser;
 import ru.project.quiz.domain.enums.question.QuizStatus;
 
