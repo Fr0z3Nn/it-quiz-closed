@@ -31,6 +31,7 @@ public class Role {
     }
 
     public Role(RoleType role) {
+        this.role = role;
     }
 
     @Override
