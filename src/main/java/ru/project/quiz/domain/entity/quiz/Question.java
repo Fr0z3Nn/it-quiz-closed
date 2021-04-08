@@ -69,6 +69,19 @@ public class Question {
         this.id = id;
     }
 
+    @Override
+    public String toString() {
+        return "Question{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", imageUrl='" + imageUrl + '\'' +
+                ", difficultyType=" + difficultyType +
+                ", categoryType=" + categoryType +
+                ", answers=" + answers +
+                '}';
+    }
+
     public String getName() {
         return name;
     }

@@ -27,6 +27,7 @@ public class QuestionController {
     @GetMapping(RANDOM_QUESTION)
     public ResponseEntity<QuestionDTO> getQuestion() {
         QuestionDTO questionDTO = questionService.getRandomQuestion();
+        System.out.println(questionService.getRandomQuestion());
         return new ResponseEntity<>(questionDTO, HttpStatus.OK);
     }
 
