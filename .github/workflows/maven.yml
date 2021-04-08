@@ -21,7 +21,3 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
-          coverage:
-            range: 0..10
-            round: down
-            precision: 2
