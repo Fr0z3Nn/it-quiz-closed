@@ -15,6 +15,8 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: '11'
+      - name: Build with Maven
+        run: mvn -B clean package --file pom.xml -DskipTests
       - name: Maven Verify
         run: mvn -B clean verify
       - name: Test Coverage

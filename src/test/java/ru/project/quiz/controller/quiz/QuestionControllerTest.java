@@ -7,6 +7,5 @@ import static org.junit.jupiter.api.Assertions.*;
 class QuestionControllerTest {
     @Test
     public void test(){
-
     }
 }
