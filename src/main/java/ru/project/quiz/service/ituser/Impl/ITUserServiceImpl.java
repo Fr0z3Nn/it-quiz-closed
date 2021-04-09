@@ -1,5 +1,7 @@
 package ru.project.quiz.service.ituser.Impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -8,12 +10,14 @@ import org.springframework.stereotype.Service;
 import ru.project.quiz.domain.dto.ituser.ITUserDTO;
 import ru.project.quiz.domain.entity.ituser.ITUser;
 import ru.project.quiz.domain.entity.ituser.Role;
-import ru.project.quiz.domain.enums.ituser.RoleType;
+import ru.project.quiz.domain.enums.ituser.PermissionType;
 import ru.project.quiz.handler.exception.IncorrectInputUserException;
 import ru.project.quiz.mapper.ituser.UserMapper;
-import ru.project.quiz.repository.itquiz.UserRepository;
+import ru.project.quiz.repository.ituser.RoleRepository;
+import ru.project.quiz.repository.ituser.UserRepository;
 import ru.project.quiz.service.ituser.ITUserService;
 import ru.project.quiz.service.mail.MailService;
+import ru.project.quiz.service.quiz.Impl.QuizServiceImpl;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -24,12 +28,16 @@ import java.util.Set;
 @Service
 public class ITUserServiceImpl implements UserDetailsService, ITUserService {
     private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final MailService mailService;
     private final UserMapper userMapper;
     private final Validator validator;
 
-    public ITUserServiceImpl(UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, MailService mailService, UserMapper userMapper, Validator validator) {
+    Logger log = LoggerFactory.getLogger(ITUserServiceImpl.class);
+
+    public ITUserServiceImpl(RoleRepository roleRepository, UserRepository userRepository, BCryptPasswordEncoder bCryptPasswordEncoder, MailService mailService, UserMapper userMapper, Validator validator) {
+        this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.mailService = mailService;
@@ -64,7 +72,7 @@ public class ITUserServiceImpl implements UserDetailsService, ITUserService {
             user.setUsername(itUserDTO.getUsername());
             user.setEmail(email);
             user.setPassword(bCryptPasswordEncoder.encode(itUserDTO.getPassword()));
-            user.setRoles(Set.of(new Role(RoleType.USER)));
+            user.setRoles(Set.of(new Role("USER", Set.of(PermissionType.GENERATE_TESTS))));
             userRepository.save(user);
             mailService.registrationSuccessfulMessage(email);
         }
@@ -72,15 +80,20 @@ public class ITUserServiceImpl implements UserDetailsService, ITUserService {
 
 
     @Override
-    public void setNewRole(String username, RoleType roleType) {
+    public void setNewRole(String username, String roleName) {
         Optional<ITUser> optionalITUser = userRepository.findUserByUsername(username);
         if (optionalITUser.isEmpty()) {
+            log.error("Пользователя с username: {} не существует", username);
             throw new IncorrectInputUserException("Данный пользователь не существует");
         } else {
             ITUser user = optionalITUser.get();
-            Set<Role> set = user.getRoles();
-            set.add(new Role(roleType));
-            user.setRoles(set);
+            //TODO поиск роли по имени
+            Optional<Role> roleOptional = roleRepository.findByName(roleName);
+            if (roleOptional.isEmpty()) {
+                log.error("Роли {} не существует", roleName);
+                throw new RuntimeException("Такой роли не существует");
+            }
+            user.getRoles().add(roleOptional.get());
             userRepository.save(user);
         }
     }

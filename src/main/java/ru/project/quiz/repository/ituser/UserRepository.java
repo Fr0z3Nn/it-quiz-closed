@@ -1,4 +1,4 @@
-package ru.project.quiz.repository.itquiz;
+package ru.project.quiz.repository.ituser;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import ru.project.quiz.domain.entity.ituser.ITUser;

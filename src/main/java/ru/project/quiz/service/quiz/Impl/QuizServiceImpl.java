@@ -17,7 +17,7 @@ import ru.project.quiz.domain.entity.quiz.QuizSample;
 import ru.project.quiz.domain.enums.question.QuizStatus;
 import ru.project.quiz.handler.exception.*;
 import ru.project.quiz.mapper.quiz.QuizMapper;
-import ru.project.quiz.repository.itquiz.UserRepository;
+import ru.project.quiz.repository.ituser.UserRepository;
 import ru.project.quiz.repository.quiz.QuestionRepository;
 import ru.project.quiz.repository.quiz.QuizRepository;
 import ru.project.quiz.repository.quiz.QuizSampleRepository;

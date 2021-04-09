@@ -1,9 +1,10 @@
 package ru.project.quiz.domain.entity.ituser;
 
 import ru.project.quiz.domain.entity.BaseEntity;
-import ru.project.quiz.domain.enums.ituser.RoleType;
+import ru.project.quiz.domain.enums.ituser.PermissionType;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.Set;
 
@@ -11,52 +12,49 @@ import java.util.Set;
 @Table(name = "roles")
 public class Role extends BaseEntity {
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "name")
-    private RoleType role;
+    private String name;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(
+            name = "permissions",
+            joinColumns = @JoinColumn(name = "role_id")
+    )
+    @Column(name = "permission")
+    @Enumerated(EnumType.STRING)
+    private Set<PermissionType> permissions;
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "roles")
     private Set<ITUser> ITUsers;
 
-    public Role(RoleType role, Set<ITUser> ITUsers) {
-        this.role = role;
+    public Role(String name, Set<PermissionType> permissions, Set<ITUser> ITUsers) {
+        this.name = name;
+        this.permissions = permissions;
         this.ITUsers = ITUsers;
     }
 
     public Role() {
     }
 
-    public Role(RoleType role) {
-        this.role = role;
+    public Role(String name, Set<PermissionType> permissions) {
+        this.name = name;
+        this.permissions = permissions;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Role role1 = (Role) o;
-        return role == role1.role;
+    public String getName() {
+        return name;
     }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(role);
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public long getId() {
-        return id;
+    public Set<PermissionType> getPermissions() {
+        return permissions;
     }
 
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public RoleType getRole() {
-        return role;
-    }
-
-    public void setRole(RoleType role) {
-        this.role = role;
+    public void setPermissions(Set<PermissionType> permission) {
+        this.permissions = permission;
     }
 
     public Set<ITUser> getITUsers() {

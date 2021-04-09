@@ -1,13 +1,17 @@
 package ru.project.quiz.domain.dto.ituser;
 
-import ru.project.quiz.domain.enums.ituser.RoleType;
+import ru.project.quiz.domain.enums.ituser.PermissionType;
+
+import java.util.Set;
 
 public class RoleDTO {
     private long id;
-    private RoleType role;
+    private String name;
+    private Set<PermissionType> permissions;
 
-    public RoleDTO(RoleType role) {
-        this.role = role;
+    public RoleDTO(String name, Set<PermissionType> permissions) {
+        this.name = name;
+        this.permissions = permissions;
     }
 
     public RoleDTO() {
@@ -21,11 +25,19 @@ public class RoleDTO {
         this.id = id;
     }
 
-    public RoleType getRole() {
-        return role;
+    public String getName() {
+        return name;
     }
 
-    public void setRole(RoleType role) {
-        this.role = role;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Set<PermissionType> getPermissions() {
+        return permissions;
+    }
+
+    public void setPermissions(Set<PermissionType> permissions) {
+        this.permissions = permissions;
     }
 }

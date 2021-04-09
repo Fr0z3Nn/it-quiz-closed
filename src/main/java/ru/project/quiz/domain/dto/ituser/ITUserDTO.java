@@ -33,7 +33,8 @@ public class ITUserDTO implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.getRoles().stream()
-                .map(roleDTO -> new SimpleGrantedAuthority(roleDTO.getRole().name()))
+                .flatMap(roleDTO -> roleDTO.getPermissions().stream())
+                .map(permissionType -> new SimpleGrantedAuthority(permissionType.name()))
                 .collect(Collectors.toList());
     }
 
