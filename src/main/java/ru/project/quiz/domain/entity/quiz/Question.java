@@ -1,5 +1,6 @@
 package ru.project.quiz.domain.entity.quiz;
 
+import ru.project.quiz.domain.entity.BaseEntity;
 import ru.project.quiz.domain.enums.question.CategoryType;
 import ru.project.quiz.domain.enums.question.DifficultyType;
 
@@ -9,11 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "questions")
-public class Question {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+public class Question extends BaseEntity {
 
     @Column(name = "name")
     private String name;

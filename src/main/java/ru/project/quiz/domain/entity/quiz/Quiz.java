@@ -1,5 +1,6 @@
 package ru.project.quiz.domain.entity.quiz;
 
+import ru.project.quiz.domain.entity.BaseEntity;
 import ru.project.quiz.domain.entity.ituser.ITUser;
 import ru.project.quiz.domain.enums.question.QuizStatus;
 
@@ -9,12 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "quiz")
-public class Quiz {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+public class Quiz extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "quiz_sample_name")
@@ -60,11 +56,11 @@ public class Quiz {
         return Objects.hash(quizSample, itUser, questions, quizStatus, score);
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

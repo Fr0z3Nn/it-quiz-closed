@@ -1,16 +1,13 @@
 package ru.project.quiz.domain.entity.quiz;
 
+import ru.project.quiz.domain.entity.BaseEntity;
+
 import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @Table(name = "quiz_sample")
-public class QuizSample {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
-
+public class QuizSample extends BaseEntity {
 
     @OneToMany(mappedBy = "quizSample")
     private List<Quiz> quizes;

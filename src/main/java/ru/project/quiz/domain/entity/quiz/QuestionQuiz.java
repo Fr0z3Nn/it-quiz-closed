@@ -1,15 +1,13 @@
 package ru.project.quiz.domain.entity.quiz;
 
+import ru.project.quiz.domain.entity.BaseEntity;
+
 import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
 @Table(name = "questions_quiz")
-public class QuestionQuiz {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+public class QuestionQuiz extends BaseEntity {
 
     @ManyToOne
     @JoinColumn(name = "question_id", nullable = false)

@@ -1,17 +1,14 @@
 package ru.project.quiz.domain.entity.ituser;
 
+import ru.project.quiz.domain.entity.BaseEntity;
+
 import javax.persistence.*;
 import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class ITUser {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+public class ITUser extends BaseEntity {
 
     @Column(name = "username", unique = true)
     private String username;
@@ -53,11 +50,11 @@ public class ITUser {
         return Objects.hash(username, password, email, roles);
     }
 
-    public Long getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(long id) {
         this.id = id;
     }
 

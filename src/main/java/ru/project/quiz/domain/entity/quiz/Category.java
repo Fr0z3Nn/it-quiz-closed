@@ -1,5 +1,6 @@
 package ru.project.quiz.domain.entity.quiz;
 
+import ru.project.quiz.domain.entity.BaseEntity;
 import ru.project.quiz.domain.enums.question.CategoryType;
 
 import javax.persistence.*;
@@ -7,11 +8,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "categories")
-public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    long id;
+public class Category extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "name")

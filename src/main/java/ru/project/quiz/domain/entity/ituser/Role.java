@@ -1,5 +1,6 @@
 package ru.project.quiz.domain.entity.ituser;
 
+import ru.project.quiz.domain.entity.BaseEntity;
 import ru.project.quiz.domain.enums.ituser.RoleType;
 
 import javax.persistence.*;
@@ -8,12 +9,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-public class Role {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private long id;
+public class Role extends BaseEntity {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "name")
