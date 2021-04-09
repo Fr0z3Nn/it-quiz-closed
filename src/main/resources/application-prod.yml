@@ -1,0 +1,19 @@
+spring:
+  jpa:
+    database: postgresql
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  datasource:
+    platform: postgres
+    url: jdbc:postgresql://localhost:5432/quiz
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  config:
+    activate:
+      on-profile: "prod"
+mail-sender:
+  active: enable
+  email: ${EMAIL_SENDER}
+  password: ${EMAIL_PASSWORD}
