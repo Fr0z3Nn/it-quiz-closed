@@ -19,9 +19,9 @@ public class ITUser extends BaseEntity {
     @Column(name = "email", unique = true)
     private String email;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumns({
-            @JoinColumn(name = "roles_name", referencedColumnName = "roles_name"),
+            @JoinColumn(name = "roles_name", referencedColumnName = "name"),
             @JoinColumn(name = "user_id", referencedColumnName = "id")
 
     })
