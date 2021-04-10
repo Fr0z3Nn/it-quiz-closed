@@ -18,8 +18,8 @@ public class QuestionController {
 
     private static final String RANDOM_QUESTION = "/random";
     private static final String ADD_QUESTION = "/admin/add";
-    private static final String DELETE_QUESTION = "/admin/delete/";
-    private static final String EDIT_QUESTION = "/admin/edit/";
+    private static final String DELETE_QUESTION = "/admin/delete";
+    private static final String EDIT_QUESTION = "/admin/edit";
 
     private final QuestionService questionService;
 
