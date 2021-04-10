@@ -18,8 +18,8 @@ public class QuestionController {
 
     private static final String RANDOM_QUESTION = "/random";
     private static final String ADD_QUESTION = "/admin/add";
-    private static final String DELETE_QUESTION = "/admin/delete/{id}";
-    private static final String EDIT_QUESTION = "/admin/edit/{id}";
+    private static final String DELETE_QUESTION = "/admin/delete/";
+    private static final String EDIT_QUESTION = "/admin/edit/";
 
     private final QuestionService questionService;
 
@@ -40,14 +40,14 @@ public class QuestionController {
 
     @Operation(summary = "Удаление вопроса")
     @PostMapping(DELETE_QUESTION)
-    public ResponseEntity<Response> deleteQuestion(@PathVariable long id) {
+    public ResponseEntity<Response> deleteQuestion(@RequestParam(name = "questionId") long id) {
         questionService.deleteQuestion(id);
         return new ResponseEntity<>(new Response("Question has been deleted"), HttpStatus.OK);
     }
 
     @Operation(summary = "Редактирование вопроса")
     @PostMapping(EDIT_QUESTION)
-    public ResponseEntity<Response> editQuestion(@Valid @RequestBody QuestionDTO questionDTO, @PathVariable long id) {
+    public ResponseEntity<Response> editQuestion(@Valid @RequestBody QuestionDTO questionDTO, @RequestParam(name = "questionId") long id) {
         questionService.editQuestion(questionDTO, id);
         return new ResponseEntity<>(new Response("Question has been edited"), HttpStatus.OK);
     }
