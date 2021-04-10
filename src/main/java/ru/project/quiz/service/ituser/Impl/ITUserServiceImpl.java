@@ -72,7 +72,9 @@ public class ITUserServiceImpl implements UserDetailsService, ITUserService {
             user.setUsername(itUserDTO.getUsername());
             user.setEmail(email);
             user.setPassword(bCryptPasswordEncoder.encode(itUserDTO.getPassword()));
-            user.setRoles(Set.of(new Role("USER", Set.of(PermissionType.GENERATE_TESTS))));
+            Role role = new Role("USER", Set.of(PermissionType.GENERATE_TESTS));
+            roleRepository.save(role);
+            user.setRoles(Set.of(role));
             userRepository.save(user);
             mailService.registrationSuccessfulMessage(email);
         }

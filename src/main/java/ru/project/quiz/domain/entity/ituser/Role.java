@@ -1,24 +1,21 @@
 package ru.project.quiz.domain.entity.ituser;
 
-import ru.project.quiz.domain.entity.BaseEntity;
 import ru.project.quiz.domain.enums.ituser.PermissionType;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
-import java.util.Objects;
 import java.util.Set;
 
 @Entity
 @Table(name = "roles")
-public class Role extends BaseEntity {
-
+public class Role {
+    @Id
     @Column(name = "name")
     private String name;
 
     @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(
             name = "permissions",
-            joinColumns = @JoinColumn(name = "role_id")
+            joinColumns = @JoinColumn(name = "role_name")
     )
     @Column(name = "permission")
     @Enumerated(EnumType.STRING)
