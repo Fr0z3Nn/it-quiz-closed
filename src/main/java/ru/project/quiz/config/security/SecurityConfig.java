@@ -9,6 +9,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import ru.project.quiz.domain.enums.ituser.PermissionType;
 import ru.project.quiz.service.ituser.Impl.ITUserServiceImpl;
 
 
@@ -31,11 +32,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/auth/**").permitAll()
-                .antMatchers("/api/question/admin/**").hasAuthority("GENERATE_TESTS")
-                .antMatchers("/admin/**").hasAuthority("GENERATE_TESTS")
+                .antMatchers("/quiz_sample/admin/**").hasAuthority(PermissionType.GRAND_PERMISSION.name())
+                .antMatchers("/api/quiz/**").hasAuthority(PermissionType.GENERATE_TESTS.name())
+                .antMatchers("/api/question/admin/**").hasAuthority(PermissionType.GRAND_PERMISSION.name())
+                .antMatchers("/api/question/*").hasAuthority(PermissionType.GENERATE_TESTS.name())
+                .antMatchers("/admin/**").hasAuthority(PermissionType.GRAND_PERMISSION.name())
+                .antMatchers("/swagger-ui/**").hasAuthority(PermissionType.GRAND_PERMISSION.name())
                 .anyRequest().authenticated()
-                .and().formLogin().permitAll()
-                .and().logout().permitAll()
+                .and().logout()
+                    .logoutUrl("/api/logout")
+                    .logoutSuccessUrl("/swagger-ui.html")
+                    .permitAll()
                 .and().httpBasic()
                 .and().sessionManagement().disable();
         http.headers().frameOptions().disable();
