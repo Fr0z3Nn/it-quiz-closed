@@ -10,7 +10,7 @@ import java.util.List;
 
 @Schema(description = "Сущность вопроса")
 public class QuestionDTO {
-    @Schema(description = "ID", accessMode = Schema.AccessMode.READ_ONLY)
+    @Schema(description = "ID", accessMode = Schema.AccessMode.READ_WRITE)
     long id;
 
     @NotBlank(message = "Название вопроса не должно быть пустым")

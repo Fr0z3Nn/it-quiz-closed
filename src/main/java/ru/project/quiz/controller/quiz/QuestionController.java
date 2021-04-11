@@ -47,8 +47,8 @@ public class QuestionController {
 
     @Operation(summary = "Редактирование вопроса")
     @PostMapping(EDIT_QUESTION)
-    public ResponseEntity<Response> editQuestion(@Valid @RequestBody QuestionDTO questionDTO, @RequestParam(name = "questionId") long id) {
-        questionService.editQuestion(questionDTO, id);
+    public ResponseEntity<Response> editQuestion(@Valid @RequestBody QuestionDTO questionDTO) {
+        questionService.editQuestion(questionDTO);
         return new ResponseEntity<>(new Response("Question has been edited"), HttpStatus.OK);
     }
 
