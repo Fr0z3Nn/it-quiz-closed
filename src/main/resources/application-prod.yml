@@ -17,3 +17,5 @@ mail-sender:
   active: enable
   email: ${EMAIL_SENDER}
   password: ${EMAIL_PASSWORD}
+jwt:
+  secret: TEST-PROD

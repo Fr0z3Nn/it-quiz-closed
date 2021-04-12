@@ -1,6 +1,7 @@
 package ru.project.quiz.controller.quiz;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,7 +24,7 @@ public class QuestionController {
 
     private final QuestionService questionService;
 
-    @Operation(summary = "Получение рандом вопроса")
+    @Operation(summary = "Получение рандом вопроса", security = @SecurityRequirement(name = "bearerAuth"))
     @GetMapping(RANDOM_QUESTION)
     public ResponseEntity<QuestionDTO> getQuestion() {
         QuestionDTO questionDTO = questionService.getRandomQuestion();
@@ -31,21 +32,21 @@ public class QuestionController {
         return new ResponseEntity<>(questionDTO, HttpStatus.OK);
     }
 
-    @Operation(summary = "Добавление вопроса")
+    @Operation(summary = "Добавление вопроса", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping(ADD_QUESTION)
     public ResponseEntity<Response> addQuestion(@RequestBody QuestionDTO questionDTO) {
         questionService.saveQuestion(questionDTO);
         return new ResponseEntity<>(new Response("Question is added"), HttpStatus.OK);
     }
 
-    @Operation(summary = "Удаление вопроса")
+    @Operation(summary = "Удаление вопроса", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping(DELETE_QUESTION)
     public ResponseEntity<Response> deleteQuestion(@RequestParam(name = "questionId") long id) {
         questionService.deleteQuestion(id);
         return new ResponseEntity<>(new Response("Question has been deleted"), HttpStatus.OK);
     }
 
-    @Operation(summary = "Редактирование вопроса")
+    @Operation(summary = "Редактирование вопроса", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping(EDIT_QUESTION)
     public ResponseEntity<Response> editQuestion(@Valid @RequestBody QuestionDTO questionDTO) {
         questionService.editQuestion(questionDTO);

@@ -1,30 +1,22 @@
 package ru.project.quiz.config.swagger;
 
-import io.swagger.v3.oas.models.OpenAPI;
-import io.swagger.v3.oas.models.Paths;
-import io.swagger.v3.oas.models.info.Info;
-import org.springframework.context.annotation.Bean;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
-public class SwaggerConfiguration implements WebMvcConfigurer {
-    @Bean
-    public OpenAPI javaApi() {
-        return new OpenAPI()
-                .info(new Info()
-                        .title("JAVA QUIZ")
-                        .version("1.0.0"));
-    }
+@io.swagger.v3.oas.annotations.security.SecurityScheme(
+        type = SecuritySchemeType.HTTP,
+        name = "bearerAuth",
+        scheme = "bearer",
+        bearerFormat = "JWT"
+)
+@OpenAPIDefinition(
+        info = @io.swagger.v3.oas.annotations.info.Info(
+                title = "IT QUIZ",
+                version = "1.0.0"
+        )
+)
+public class SwaggerConfiguration {
 
-    @Override
-    public void addResourceHandlers(final ResourceHandlerRegistry registry) {
-        // Required by Swagger UI configuration
-        registry.addResourceHandler("/lib/**").addResourceLocations("/lib/").setCachePeriod(0);
-        registry.addResourceHandler("/images/**").addResourceLocations("/images/").setCachePeriod(0);
-        registry.addResourceHandler("/css/**").addResourceLocations("/css/").setCachePeriod(0);
-        registry.addResourceHandler("swagger-ui.html").addResourceLocations("classpath:/META-INF/resources/");
-        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-    }
 }

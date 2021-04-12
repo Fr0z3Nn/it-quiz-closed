@@ -1,6 +1,7 @@
 package ru.project.quiz.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,7 @@ public class AdminController {
 
     public final String SET_ROLE = "/give_role";
 
-    @Operation(summary = "Дать роль пользователю")
+    @Operation(summary = "Дать роль пользователю", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping(SET_ROLE)
     public void setNewRole(@RequestParam String username, @RequestParam String roleName) {
         userService.setNewRole(username, roleName);
