@@ -18,7 +18,7 @@ import ru.project.quiz.service.ituser.ITUserService;
 
 @RestController
 @Tag(name = "Контроллер аутентификации")
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 public class JwtAuthenticationController {
 
     @Autowired

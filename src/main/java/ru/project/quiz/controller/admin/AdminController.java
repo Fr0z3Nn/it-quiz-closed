@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.project.quiz.service.ituser.ITUserService;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("/api/admin")
 @Tag(name = "Админка")
 public class AdminController {
 

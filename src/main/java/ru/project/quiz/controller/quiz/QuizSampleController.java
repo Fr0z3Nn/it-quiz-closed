@@ -13,7 +13,7 @@ import ru.project.quiz.service.quiz.QuizSampleService;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping("/quiz_sample")
+@RequestMapping("/api/quiz_sample")
 @Tag(name = "Контроллер сэмплов")
 public class QuizSampleController {
     public final QuizSampleService quizSampleService;

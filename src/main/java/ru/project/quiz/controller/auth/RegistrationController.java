@@ -13,7 +13,7 @@ import ru.project.quiz.handler.response.Response;
 import ru.project.quiz.service.ituser.ITUserService;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @Tag(name = "Регистрация")
 public class RegistrationController {
     public final ITUserService userService;
