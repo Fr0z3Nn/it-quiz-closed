@@ -7,6 +7,8 @@ import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -25,9 +27,10 @@ public class QuestionRepositoryCustomImpl implements QuestionRepositoryCustom {
 
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<Question> root = query.from(Question.class);
-        Long numOfQuestions = em.createQuery(query.select(criteriaBuilder.count(root))).getSingleResult();
+        List<Long> numOfQuestions = em.createQuery(query.select(root.get("id"))).getResultList();
 
-        long randomQuestion = (long) (Math.random() * numOfQuestions) + 1;
+        Collections.shuffle(numOfQuestions);
+        long randomQuestion = numOfQuestions.get(0);
 
         CriteriaQuery<Question> questionQuery = criteriaBuilder.createQuery(Question.class);
         Root<Question> questionRoot = questionQuery.from(Question.class);
