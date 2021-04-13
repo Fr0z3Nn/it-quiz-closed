@@ -28,8 +28,10 @@ public class ITUserDTO implements UserDetails {
     @NotBlank
     private String email;
 
+    @Schema(description = "roles", accessMode = Schema.AccessMode.READ_ONLY)
     private Set<RoleDTO> roles;
 
+    @Schema(description = "Authorities", accessMode = Schema.AccessMode.READ_ONLY)
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return this.getRoles().stream()
@@ -38,21 +40,25 @@ public class ITUserDTO implements UserDetails {
                 .collect(Collectors.toSet());
     }
 
+    @Schema(description = "expired", accessMode = Schema.AccessMode.READ_ONLY)
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
 
+    @Schema(description = "locked", accessMode = Schema.AccessMode.READ_ONLY)
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
 
+    @Schema(description = "non_expired", accessMode = Schema.AccessMode.READ_ONLY)
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
 
+    @Schema(description = "is_enabled", accessMode = Schema.AccessMode.READ_ONLY)
     @Override
     public boolean isEnabled() {
         return true;
