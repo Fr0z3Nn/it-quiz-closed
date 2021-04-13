@@ -24,7 +24,8 @@ public class GlobalExceptionHandler {
             IncorrectInputUserException.class,
             ConstraintViolationException.class,
             QuestionCreationException.class,
-            QuizNotFoundException.class})
+            QuizNotFoundException.class,
+            RuntimeException.class})
     public ResponseEntity<Response> handleException(RuntimeException e) {
         return new ResponseEntity<>(new Response(e.getMessage()), HttpStatus.BAD_REQUEST);
     }

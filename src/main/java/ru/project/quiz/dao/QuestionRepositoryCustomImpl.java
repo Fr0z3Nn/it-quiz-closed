@@ -27,10 +27,14 @@ public class QuestionRepositoryCustomImpl implements QuestionRepositoryCustom {
 
         CriteriaQuery<Long> query = criteriaBuilder.createQuery(Long.class);
         Root<Question> root = query.from(Question.class);
-        List<Long> numOfQuestions = em.createQuery(query.select(root.get("id"))).getResultList();
+        List<Long> listOfQuestions = em.createQuery(query.select(root.get("id"))).getResultList();
 
-        Collections.shuffle(numOfQuestions);
-        long randomQuestion = numOfQuestions.get(0);
+        if (listOfQuestions.isEmpty()) {
+            throw new RuntimeException("Список вопросов пуст");
+        }
+
+        Collections.shuffle(listOfQuestions);
+        long randomQuestion = listOfQuestions.get(0);
 
         CriteriaQuery<Question> questionQuery = criteriaBuilder.createQuery(Question.class);
         Root<Question> questionRoot = questionQuery.from(Question.class);
