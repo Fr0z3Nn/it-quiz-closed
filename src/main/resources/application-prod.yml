@@ -18,4 +18,4 @@ mail-sender:
   email: ${EMAIL_SENDER}
   password: ${EMAIL_PASSWORD}
 jwt:
-  secret: TEST-PROD
+  secret: ${SECRET_TOKEN}
