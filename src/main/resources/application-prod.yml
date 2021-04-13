@@ -6,9 +6,9 @@ spring:
       ddl-auto: create
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/quiz
-    username: postgres
-    password: postgres
+    url: ${URI}
+    username: ${USERNAME}
+    password: ${PASSWORD}
     driver-class-name: org.postgresql.Driver
   config:
     activate:
