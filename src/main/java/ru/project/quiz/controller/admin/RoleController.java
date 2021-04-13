@@ -7,9 +7,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import ru.project.quiz.domain.dto.ituser.ITUserDTO;
-import ru.project.quiz.domain.entity.ituser.ITUser;
 import ru.project.quiz.domain.enums.ituser.PermissionType;
-import ru.project.quiz.service.ituser.ITUserService;
 import ru.project.quiz.service.ituser.RoleService;
 
 import java.util.List;
@@ -20,11 +18,9 @@ import java.util.List;
 @Tag(name = "Контроллер ролей")
 public class RoleController {
     private final RoleService roleService;
-    private final ITUserService userService;
 
-    public RoleController(RoleService roleService, ITUserService userService) {
+    public RoleController(RoleService roleService) {
         this.roleService = roleService;
-        this.userService = userService;
     }
 
     @Operation(summary = "Создать новую роль")
