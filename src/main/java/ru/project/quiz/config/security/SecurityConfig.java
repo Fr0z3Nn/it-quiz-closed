@@ -58,6 +58,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .sessionManagement().sessionFixation().none()
                 .and()
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+        http.requiresChannel()
+                .anyRequest().requiresInsecure();
     }
 
     @Override
