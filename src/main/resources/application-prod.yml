@@ -19,3 +19,12 @@ mail-sender:
   password: ${EMAIL_PASSWORD}
 jwt:
   secret: ${SECRET_TOKEN}
+server:
+  port: 443
+  ssl:
+    key-store: src\main\resources\keystore.p12
+    key-store-password: itquiz
+    keyStoreType: PKCS12
+    keyAlias: tomcat
+security:
+  require-ssl: true
