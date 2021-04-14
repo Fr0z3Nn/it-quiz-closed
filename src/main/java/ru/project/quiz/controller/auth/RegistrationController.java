@@ -1,6 +1,7 @@
 package ru.project.quiz.controller.auth;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class RegistrationController {
     public final ITUserService userService;
     public final String REGISTER = "/register";
 
-    @Operation(summary = "Регистрация")
+    @Operation(summary = "Регистрация", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping(REGISTER)
     public ResponseEntity<Response> registration(@RequestBody ITUserDTO ITUserDTO) {
         userService.saveUser(ITUserDTO);

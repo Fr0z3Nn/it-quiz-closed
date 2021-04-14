@@ -1,6 +1,7 @@
 package ru.project.quiz.controller.admin;
 
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,19 +24,19 @@ public class RoleController {
         this.roleService = roleService;
     }
 
-    @Operation(summary = "Создать новую роль")
+    @Operation(summary = "Создать новую роль", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/add")
     public void addNewRole(@RequestParam String name, @RequestParam PermissionType permissionType) {
         roleService.addNewRole(name, permissionType);
     }
 
-    @Operation(summary = "Удалить роль")
+    @Operation(summary = "Удалить роль", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/delete")
     public void deleteRole(@RequestParam String name) {
         roleService.deleteRole(name);
     }
 
-    @Operation(summary = "Лист пользователей с данной ролью")
+    @Operation(summary = "Лист пользователей с данной ролью", security = @SecurityRequirement(name = "bearerAuth"))
     @PostMapping("/find_by_role")
     public List<ITUserDTO> findUsersByRole(@RequestParam String name) {
         return roleService.findUsersByRole(name);
