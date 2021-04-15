@@ -95,6 +95,12 @@
             <artifactId>jjwt</artifactId>
             <version>0.9.1</version>
         </dependency>
+        <dependency>
+            <artifactId>spring-security-test</artifactId>
+            <groupId>org.springframework.security</groupId>
+            <version>5.4.5</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
