@@ -1,0 +1,23 @@
+spring:
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+  config:
+    activate:
+      on-profile: "dev"
+mail-sender:
+  active: disable
+  email: test@test.com
+  password: test
+jwt:
+  secret: itquizsecrettokendev
+server:
+  port: 443
+  ssl:
+    key-store: src\main\resources\keystore.p12
+    key-store-password: itquiz
+    keyStoreType: PKCS12
+    keyAlias: tomcat
+security:
+  require-ssl: true
