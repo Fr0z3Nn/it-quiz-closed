@@ -31,8 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ExtendWith({SpringExtension.class, MockitoExtension.class})
 @SpringBootTest
 @AutoConfigureMockMvc
-@TestPropertySource(properties = {"EMAIL_SENDER=test",
-        "EMAIL_PASSWORD=testpass","PROFILE=dev"})
+@TestPropertySource(properties = {"PROFILE=dev"})
 public class RegistrationControllerTest {
 
     private final ObjectMapper om = new ObjectMapper();
